@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:gestor_empreendimento/config/constants.dart';
 import 'package:gestor_empreendimento/controllers/insumo_controller.dart';
 import 'package:gestor_empreendimento/repositories/insumo_repository.dart';
+import 'package:gestor_empreendimento/controllers/receita_controller.dart';
+import 'package:gestor_empreendimento/repositories/receita_repository.dart';
 import 'package:provider/provider.dart';
 import 'config/routes.dart';
+import 'controllers/mercadoria_controller.dart';
+import 'repositories/mercadoria_repository.dart';
 
 void main() {
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => InsumoController(InsumoRepository())),
+        ChangeNotifierProvider(create: (context) => ReceitaController(ReceitaRepository(), context.read<InsumoController>())),
+        ChangeNotifierProvider(create: (context) => MercadoriaController(MercadoriaRepository())),
       ],
       child: App(),
     ),

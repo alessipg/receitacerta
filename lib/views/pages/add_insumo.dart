@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestor_empreendimento/config/medida.dart';
 import 'package:provider/provider.dart';
 import 'package:gestor_empreendimento/models/insumo.dart';
 import 'package:gestor_empreendimento/controllers/insumo_controller.dart';
@@ -32,8 +33,15 @@ class AddInsumo extends StatelessWidget {
             SizedBox(height: 16), // Espaço entre o campo e o botão
             ElevatedButton(
               onPressed: () {
-                insumoController.addInsumo(
-                  Insumo(nome: nome, quantidade: 0, id: 1, custo: 20),
+                insumoController.criar(
+                  Insumo(
+                    nome: nome,
+                    quantidade: 0,
+                    id: null,
+                    custo: 20,
+                    medida: Medida.kg,
+                    isDiscreto: false,
+                  ),
                 );
                 GoRouter.of(context).pop();
               },

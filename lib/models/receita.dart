@@ -1,11 +1,38 @@
 import 'package:gestor_empreendimento/models/insumo.dart';
+import 'package:gestor_empreendimento/models/mercadoria.dart';
 
 class Receita {
-  int id;
+  int? id;
   String nome;
-  double valor;
-  Map<Insumo, double> consumoPorUnidade; // chave: insumo, valor: quantidade por unidade
+  Mercadoria produto;
+  late double custoUnitario;
+  late Map<Insumo, double> consumoPorUnidade =
+      {}; // chave: insumo, valor: quantidade por unidade
+  Receita({
+    this.id,
+    required this.nome,
+    required materiaPrima,
+    required this.produto,
+    required quantidade,
+  }) {
+    materiaPrima.forEach((insumo, qtd) {
+      consumoPorUnidade[insumo] = qtd / quantidade;
+      print("consumoPorUnidade[${insumo.nome}] = ${consumoPorUnidade[insumo]}");
+    });
+    custoUnitario = _calcularCusto(consumoPorUnidade, quantidade);
+  }
 
-  Receita({required this.id, required this.nome, required this.valor, required this.consumoPorUnidade});
-
+  static double _calcularCusto(
+    Map<Insumo, double> consumoPorUnidade,
+    int quantidade,
+  ) {
+    double custoTotal = 0.0;
+    consumoPorUnidade.forEach((insumo, quantidadePorUnidade) {
+      custoTotal += insumo.custo * quantidadePorUnidade;
+      print(
+        "insumo ${insumo.nome} custo ${insumo.custo} quantidadePorUnidade $quantidadePorUnidade quantidade $quantidade",
+      );
+    });
+    return custoTotal;
+  }
 }

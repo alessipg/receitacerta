@@ -27,7 +27,7 @@ class _InsumosState extends State<Insumos> {
             final List<Insumo> insumo = insumoController.insumos;
             return ListTile(
               title: Text(insumo[index].nome), // ajuste conforme seu modelo
-              subtitle: Text(insumo[index].quantidade.toString() ?? ''),
+              subtitle: Text(insumo[index].quantidade.toString()),
             );
           },
         ),
