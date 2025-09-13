@@ -17,8 +17,7 @@ class Receita {
   }) {
     materiaPrima.forEach((insumo, qtd) {
       consumoPorUnidade[insumo] = qtd / quantidade;
-      print("consumoPorUnidade[${insumo.nome}] = ${consumoPorUnidade[insumo]}");
-    });
+   });
     custoUnitario = _calcularCusto(consumoPorUnidade, quantidade);
   }
 
@@ -29,9 +28,6 @@ class Receita {
     double custoTotal = 0.0;
     consumoPorUnidade.forEach((insumo, quantidadePorUnidade) {
       custoTotal += insumo.custo * quantidadePorUnidade;
-      print(
-        "insumo ${insumo.nome} custo ${insumo.custo} quantidadePorUnidade $quantidadePorUnidade quantidade $quantidade",
-      );
     });
     return custoTotal;
   }

@@ -5,6 +5,8 @@ class Img {
   static const googleLogo = 'assets/images/google_logo.png';
   static const recipeBook = 'assets/images/recipe_book.png';
   static const wheat = 'assets/images/wheat.png';
+  static const edit = 'assets/images/edit.png';
+  static const remove = 'assets/images/remove.png';
 }
 
 class Font {

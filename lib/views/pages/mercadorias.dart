@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gestor_empreendimento/views/widgets/app_bar_actions.dart';
+import 'package:gestor_empreendimento/views/widgets/app_bar_user.dart';
 
 class Mercadorias extends StatefulWidget {
   const Mercadorias({super.key});
@@ -11,20 +13,21 @@ class _MercadoriasState extends State<Mercadorias> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mercadorias'),
-      ),
-      body: ListView(
-        children: const [
-          ListTile(
-            title: Text('Mercadoria 1'),
-            subtitle: Text('Descrição da Mercadoria 1'),
+      appBar: AppBarUser(),
+      body: AppBarActions(
+        onBack: () => Navigator.of(context).pop(),
+        onMore: () {},
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: 10, // Exemplo: número fixo de itens
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text('Mercadoria ${index + 1}'),
+                );
+              },
+            ),
           ),
-          ListTile(
-            title: Text('Mercadoria 2'),
-            subtitle: Text('Descrição da Mercadoria 2'),
-          ),
-          // Add more ListTiles as needed
         ],
       ),
     );
