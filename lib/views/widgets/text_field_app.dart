@@ -8,13 +8,11 @@ class TextFieldApp extends StatelessWidget {
     this.hintText,
     this.prefixIcon,
     this.onChanged,
-    this.focusNode,
   });
   final TextEditingController? textController;
   final String? hintText;
   final Widget? prefixIcon;
   final ValueChanged<String>? onChanged;
-  final FocusNode? focusNode;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -24,7 +22,6 @@ class TextFieldApp extends StatelessWidget {
         child: TextField(
           onChanged: onChanged,
           controller: textController,
-          focusNode: focusNode,
           cursorColor: Colors.white,
           cursorHeight: 20,
           decoration: InputDecoration(

@@ -18,7 +18,6 @@ class Receitas extends StatefulWidget {
 class _ReceitasState extends State<Receitas> {
   final TextEditingController nomeController = TextEditingController();
   final FocusNode buscaFocusNode = FocusNode();
-  String stringBusca = '';
   bool campoBuscaFocado = false;
 
   @override
@@ -40,8 +39,7 @@ class _ReceitasState extends State<Receitas> {
 
   @override
   Widget build(BuildContext context) {
-    final receitaController = context.watch<ReceitaController>();
-    final receitasFiltradas = receitaController.filtrarPorNome(stringBusca);
+    final bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
       appBar: AppBarUser(),
@@ -65,80 +63,84 @@ class _ReceitasState extends State<Receitas> {
                 textController: nomeController,
                 hintText: 'Buscar receita',
                 prefixIcon: const Icon(Icons.search, color: Colors.white),
-                focusNode: buscaFocusNode,
-                onChanged: (value) {
-                  setState(() {
-                    stringBusca = value;
-                  });
-                },
+                onChanged: (_) => setState(() {}), // just rebuild when typing
               ),
             ],
           ),
           Expanded(
-            child: Column(
-              children: [
-                ListApp(
-                  shrinkWrap: true,
-                  children: receitasFiltradas
-                      .map(
-                        (receita) => ListTile(
-                          title: Text(receita.nome),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: Image.asset('assets/images/edit.png'),
-                                onPressed: () {
-                                  // Ação de editar receita
-                                },
+            child: Consumer<ReceitaController>(
+              builder: (context, receitaController, _) {
+                final receitasFiltradas = receitaController
+                    .filtrarPorNome(nomeController.text);
+
+                return Column(
+                  children: [
+                    ListApp(
+                      shrinkWrap: true,
+                      children: receitasFiltradas
+                          .map(
+                            (receita) => ListTile(
+                              title: Text(receita.nome),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: Image.asset('assets/images/edit.png'),
+                                    onPressed: () {
+                                      // Edit action
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: Image.asset('assets/images/remove.png'),
+                                    onPressed: () {
+                                      // Remove action
+                                    },
+                                  ),
+                                ],
                               ),
-                              IconButton(
-                                icon: Image.asset('assets/images/remove.png'),
-                                onPressed: () {
-                                  // Ação de remover receita
-                                },
-                              ),
-                            ],
+                            ),
+                          )
+                          .toList(),
+                    ),
+                    const SizedBox(height: 16),
+                    if (!isKeyboardOpen)
+                      ElevatedButton(
+                        onPressed: () =>
+                            GoRouter.of(context).push('/add_receita'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: UserColor.primary,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 12,
+                          ),
+                          alignment: Alignment.center,
+                          fixedSize: const Size(210, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                      )
-                      .toList(),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () => GoRouter.of(context).push('/add_receita'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: UserColor.primary,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 12,
-                    ),
-                    alignment: Alignment.center,
-                    fixedSize: const Size(210, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text(
-                        'Nova Receita',
-                        style: TextStyle(
-                          fontFamily: Font.aleo,
-                          fontSize: 20,
-                          color: UserColor.secondaryContainer,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              'Nova Receita',
+                              style: TextStyle(
+                                fontFamily: Font.aleo,
+                                fontSize: 20,
+                                color: UserColor.secondaryContainer,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Icon(
+                              Icons.add_circle_outline,
+                              color: UserColor.secondaryContainer,
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(width: 8),
-                      Icon(
-                        Icons.add_circle_outline,
-                        color: UserColor.secondaryContainer,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                  ],
+                );
+              },
             ),
           ),
         ],
