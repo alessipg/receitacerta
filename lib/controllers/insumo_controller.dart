@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:gestor_empreendimento/models/insumo.dart';
 import 'package:gestor_empreendimento/repositories/insumo_repository.dart';
-
+import 'package:diacritic/diacritic.dart';  
 class InsumoController extends ChangeNotifier {
   InsumoRepository repository;
   InsumoController(this.repository);
@@ -43,6 +43,7 @@ class InsumoController extends ChangeNotifier {
   }
 
   void update(Insumo insumo) {
+    print(insumo.custo);
     final index = repository.insumos.indexWhere((i) => i.id == insumo.id);
     if (index == -1) {
       throw Exception('Insumo com id ${insumo.id} não encontrado.');
@@ -72,6 +73,15 @@ class InsumoController extends ChangeNotifier {
   void delete(int id) {
     repository.insumos.removeWhere((insumo) => insumo.id == id);
     notifyListeners();
+  }
+  List<Insumo> filtrarPorNome(String termo) {
+    return insumos
+        .where(
+          (r) => removeDiacritics(
+            r.nome.toLowerCase(),
+          ).contains(removeDiacritics(termo.toLowerCase())),
+        )
+        .toList();
   }
   
 }

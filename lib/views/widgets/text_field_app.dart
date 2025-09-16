@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gestor_empreendimento/config/constants.dart';
 
 class TextFieldApp extends StatelessWidget {
@@ -8,11 +9,15 @@ class TextFieldApp extends StatelessWidget {
     this.hintText,
     this.prefixIcon,
     this.onChanged,
+    this.textInputType,
+    this.inputFormatters,
   });
   final TextEditingController? textController;
   final String? hintText;
   final Widget? prefixIcon;
   final ValueChanged<String>? onChanged;
+  final TextInputType? textInputType;
+  final List<TextInputFormatter>? inputFormatters;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -24,6 +29,8 @@ class TextFieldApp extends StatelessWidget {
           controller: textController,
           cursorColor: Colors.white,
           cursorHeight: 20,
+          inputFormatters: [if (inputFormatters != null) ...inputFormatters!],
+          keyboardType: textInputType,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20.0),

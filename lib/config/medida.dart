@@ -1,11 +1,12 @@
 enum Medida {
-  g('g'),
-  kg('kg'),
-  l('L'),
-  ml('ml'),
-  un('un');
+  //g('g', 'gramas'),
+  kg('kg', 'quilogramas'),
+  l('L', 'litros'),
+  //ml('ml', 'mililitros'),
+  un('un', 'unidades');
 
-  const Medida(this.sigla);
   final String sigla;
-
+  final String nome;
+  const Medida(this.sigla, this.nome);
 }
+

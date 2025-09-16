@@ -64,7 +64,6 @@ void main() {
     // O custo é calculado como:
     // soma de (custo do insumo * quantidade por unidade * quantidade de produto)
     final receita = receitaRepository[0];
-    print("receita ${receita.nome} custo ${receita.custoUnitario}");
     expect(receita.custoUnitario, equals(4.5));
   });
 }

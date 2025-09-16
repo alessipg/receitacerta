@@ -9,8 +9,6 @@ class Insumo extends Produto {
     required super.quantidade,
     required super.medida,
     required super.isDiscreto,
-  }){
-    custo = custo / quantidade;
-  }
+  });
 
 }
