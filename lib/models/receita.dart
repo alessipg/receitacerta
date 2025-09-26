@@ -6,8 +6,8 @@ class Receita {
   String nome;
   Mercadoria produto;
   late double custoUnitario;
-  late Map<Insumo, double> consumoPorUnidade =
-      {}; // chave: insumo, valor: quantidade por unidade
+  late Map<Insumo, double> consumoPorUnidade = {}; // chave: insumo, valor: quantidade por unidade
+  
   Receita({
     this.id,
     required this.nome,

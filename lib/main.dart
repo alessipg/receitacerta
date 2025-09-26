@@ -13,9 +13,18 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => InsumoController(InsumoRepository())),
-        ChangeNotifierProvider(create: (context) => ReceitaController(ReceitaRepository(), context.read<InsumoController>())),
-        ChangeNotifierProvider(create: (context) => MercadoriaController(MercadoriaRepository())),
+        ChangeNotifierProvider(
+          create: (context) => InsumoController(InsumoRepository()),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ReceitaController(
+            ReceitaRepository(),
+            context.read<InsumoController>(),
+          ),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MercadoriaController(MercadoriaRepository()),
+        ),
       ],
       child: App(),
     ),
@@ -27,36 +36,31 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider(create: (context) => InsumoRepository()),
-      ],
-      child: MaterialApp.router(
-        title: 'Gestor de Empreendimento',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: UserColor.background, // your default color
-          appBarTheme: AppBarTheme(
-            backgroundColor: UserColor.secondary,
-            foregroundColor: Colors.white,
-          ),
-          textTheme: ThemeData.light().textTheme.apply(fontFamily: Font.aleo),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: UserColor.secondaryContainer,
-              foregroundColor: UserColor.primary,
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              side: BorderSide(color: UserColor.primary, width: 2.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(0),
-              ),
-              textStyle: TextStyle(fontSize: 24, fontFamily: Font.aleo),
+    return MaterialApp.router(
+      title: 'Gestor de Empreendimento',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: UserColor.background,
+        appBarTheme: AppBarTheme(
+          backgroundColor: UserColor.secondary,
+          foregroundColor: Colors.white,
+        ),
+        textTheme: ThemeData.light().textTheme.apply(fontFamily: Font.aleo),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: UserColor.secondaryContainer,
+            foregroundColor: UserColor.primary,
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            side: BorderSide(color: UserColor.primary, width: 2.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(0),
             ),
+            textStyle: TextStyle(fontSize: 24, fontFamily: Font.aleo),
           ),
         ),
-        routerConfig: routes,
-        debugShowCheckedModeBanner: false,
       ),
+      routerConfig: routes,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

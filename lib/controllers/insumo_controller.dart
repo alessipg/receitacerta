@@ -43,7 +43,6 @@ class InsumoController extends ChangeNotifier {
   }
 
   void update(Insumo insumo) {
-    print(insumo.custo);
     final index = repository.insumos.indexWhere((i) => i.id == insumo.id);
     if (index == -1) {
       throw Exception('Insumo com id ${insumo.id} não encontrado.');

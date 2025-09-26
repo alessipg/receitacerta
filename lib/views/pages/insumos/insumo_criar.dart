@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestor_empreendimento/config/medida.dart';
 import 'package:gestor_empreendimento/utils/currency_input_formatter.dart';
-import 'package:gestor_empreendimento/views/widgets/app_bar_actions.dart';
-import 'package:gestor_empreendimento/views/widgets/app_bar_user.dart';
 import 'package:provider/provider.dart';
 import 'package:gestor_empreendimento/models/insumo.dart';
 import 'package:go_router/go_router.dart';
@@ -39,166 +37,157 @@ class _InsumoCriarState extends State<InsumoCriar> {
   Widget build(BuildContext context) {
     final insumoController = context.watch<InsumoController>();
 
-    return Scaffold(
-      appBar: AppBarUser(),
-      body: AppBarActions(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Form(
-              key: _formKey, // ✅ added form
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Criar Insumo',
-                    style: TextStyle(fontSize: 24, color: UserColor.primary),
-                  ),
-                  const SizedBox(height: 16),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Criar Insumo',
+              style: TextStyle(fontSize: 24, color: UserColor.primary),
+            ),
+            const SizedBox(height: 16),
 
-                  // Nome
-                  TextFormField(
-                    controller: nomeController,
-                    decoration: const InputDecoration(
-                      labelText: 'Nome do insumo',
-                      border: OutlineInputBorder(),
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira um nome.';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
+            // Nome
+            TextFormField(
+              controller: nomeController,
+              decoration: const InputDecoration(
+                labelText: 'Nome do insumo',
+                border: OutlineInputBorder(),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Por favor, insira um nome.';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
 
-                  // Quantidade
-                  TextFormField(
-                    controller: quantidadeController,
-                    inputFormatters: [QuantityInputFormatter()], // ✅ apply mask
-                    decoration: InputDecoration(
-                      labelText: 'Quantidade total em ${selectedMedida.nome}',
-                      border: const OutlineInputBorder(),
-                    ),
+            // Quantidade
+            TextFormField(
+              controller: quantidadeController,
+              inputFormatters: [QuantityInputFormatter()], // ✅ apply mask
+              decoration: InputDecoration(
+                labelText: 'Quantidade total em ${selectedMedida.nome}',
+                border: const OutlineInputBorder(),
+              ),
 
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Por favor, insira uma quantidade.';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Por favor, insira uma quantidade.';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
 
-                  // Custo
-                  TextFormField(
-                    controller: custoController,
-                    decoration: const InputDecoration(
-                      labelText: 'Custo total',
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [CurrencyInputFormatter()],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Custo por ${selectedMedida.nome.substring(0, selectedMedida.nome.length - 1)} calculado:',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                      ValueListenableBuilder(
-                        valueListenable: custoController,
-                        builder: (context, _, _) {
-                          return ValueListenableBuilder(
-                            valueListenable: quantidadeController,
-                            builder: (context, _, _) {
-                              // Use os métodos utilitários para obter valores limpos
-                              final custo =
-                                  CurrencyInputFormatter.getCleanValue(
-                                    custoController.text,
-                                  );
-                              final quantidade =
-                                  QuantityInputFormatter.getCleanValue(
-                                    quantidadeController.text,
-                                  );
-                              custoPorUnidade = quantidade > 0
-                                  ? (custo / quantidade)
-                                  : 0;
-                              return Text(
-                                ' R\$ ${custoPorUnidade.toStringAsFixed(2).replaceAll('.', ',')}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  // Dropdown
-                  DropdownButtonFormField<Medida>(
-                    initialValue: selectedMedida,
-                    decoration: const InputDecoration(
-                      labelText: 'Medida',
-                      border: OutlineInputBorder(),
-                    ),
-                    items: Medida.values.map((Medida medida) {
-                      return DropdownMenuItem<Medida>(
-                        value: medida,
-                        child: Row(
-                          children: [
-                            Text(medida.nome.toString()),
-                            Text(' (${medida.toString().split('.').last})'),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (Medida? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          selectedMedida = newValue;
-                        });
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Button
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        final double quantidade =
-                            QuantityInputFormatter.getCleanValue(
-                              quantidadeController.text,
-                            );
-
-                        insumoController.criar(
-                          Insumo(
-                            nome: nomeController.text,
-                            quantidade: quantidade,
-                            id: null,
-                            custo: custoPorUnidade,
-                            medida: selectedMedida,
-                            isDiscreto: false,
+            // Custo
+            TextFormField(
+              controller: custoController,
+              decoration: const InputDecoration(
+                labelText: 'Custo total',
+                border: OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+              inputFormatters: [CurrencyInputFormatter()],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Custo por ${selectedMedida.nome.substring(0, selectedMedida.nome.length - 1)} calculado:',
+                  style: TextStyle(fontSize: 16),
+                ),
+                ValueListenableBuilder(
+                  valueListenable: custoController,
+                  builder: (context, _, _) {
+                    return ValueListenableBuilder(
+                      valueListenable: quantidadeController,
+                      builder: (context, _, _) {
+                        // Use os métodos utilitários para obter valores limpos
+                        final custo = CurrencyInputFormatter.getCleanValue(
+                          custoController.text,
+                        );
+                        final quantidade = QuantityInputFormatter.getCleanValue(
+                          quantidadeController.text,
+                        );
+                        custoPorUnidade = quantidade > 0
+                            ? (custo / quantidade)
+                            : 0;
+                        return Text(
+                          ' R\$ ${custoPorUnidade.toStringAsFixed(2).replaceAll('.', ',')}',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         );
-                        FocusScope.of(context).unfocus();
-                        GoRouter.of(context).pop();
-                      }
-                    },
-                    child: const Text('Adicionar'),
-                  ),
-                ],
-              ),
+                      },
+                    );
+                  },
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            // Dropdown
+            DropdownButtonFormField<Medida>(
+              initialValue: selectedMedida,
+              decoration: const InputDecoration(
+                labelText: 'Medida',
+                border: OutlineInputBorder(),
+              ),
+              items: Medida.values.map((Medida medida) {
+                return DropdownMenuItem<Medida>(
+                  value: medida,
+                  child: Row(
+                    children: [
+                      Text(medida.nome.toString()),
+                      Text(' (${medida.toString().split('.').last})'),
+                    ],
+                  ),
+                );
+              }).toList(),
+              onChanged: (Medida? newValue) {
+                if (newValue != null) {
+                  setState(() {
+                    selectedMedida = newValue;
+                  });
+                }
+              },
+            ),
+            const SizedBox(height: 16),
+
+            // Button
+            ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState?.validate() ?? false) {
+                  final double quantidade =
+                      QuantityInputFormatter.getCleanValue(
+                        quantidadeController.text,
+                      );
+
+                  insumoController.criar(
+                    Insumo(
+                      nome: nomeController.text,
+                      quantidade: quantidade,
+                      id: null,
+                      custo: custoPorUnidade,
+                      medida: selectedMedida,
+                      isDiscreto: false,
+                    ),
+                  );
+                  FocusScope.of(context).unfocus();
+                  GoRouter.of(context).pop();
+                }
+              },
+              child: const Text('Adicionar'),
+            ),
+          ],
+        ),
       ),
     );
   }
