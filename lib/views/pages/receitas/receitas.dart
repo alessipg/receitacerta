@@ -33,148 +33,121 @@ class _ReceitasState extends State<Receitas> {
   Widget build(BuildContext context) {
     final bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
-    return Scaffold(
-      appBar: AppBarUser(),
-      body: Column(
-        children: [
-          AppBarActions(
-            onBack: () => GoRouter.of(context).pop(),
-            onMore: () {},
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Title(
-                  color: Colors.black,
-                  child: const Text(
-                    'Receitas',
-                    style: TextStyle(fontSize: 36, color: UserColor.primary),
-                  ),
-                ),
-              ),
-              TextFieldApp(
-                textController: nomeController,
-                hintText: 'Buscar receita',
-                prefixIcon: const Icon(Icons.search, color: Colors.white),
-                onChanged: (_) => setState(() {}), // just rebuild when typing
-              ),
-            ],
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Text(
+            'Receitas',
+            style: TextStyle(fontSize: 36, color: UserColor.primary),
           ),
-          Expanded(
-            child: Consumer<ReceitaController>(
-              builder: (context, controller, _) {
-                final receitasFiltradas = controller.filtrarPorNome(
-                  nomeController.text,
-                );
+        ),
+        TextFieldApp(
+          textController: nomeController,
+          hintText: 'Buscar receita',
+          prefixIcon: const Icon(Icons.search, color: Colors.white),
+          onChanged: (_) => setState(() {}),
+        ),
+        Consumer<ReceitaController>(
+          builder: (context, controller, _) {
+            final receitasFiltradas = controller.filtrarPorNome(
+              nomeController.text,
+            );
 
-                return Column(
-                  children: receitasFiltradas.isEmpty
-                      ? [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: const Text(
-                              'Nenhuma receita encontrada.',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: UserColor.secondary,
+            if (receitasFiltradas.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: const Text(
+                  'Nenhuma receita encontrada.',
+                  style: TextStyle(fontSize: 20, color: UserColor.secondary),
+                ),
+              );
+            }
+
+            return Column(
+              children: [
+                ListApp(
+                  children: receitasFiltradas
+                      .map(
+                        (receita) => ListTile(
+                          title: Text(receita.nome),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: Image.asset('assets/images/edit.png'),
+                                onPressed: () {
+                                  // Edit action
+                                },
                               ),
+                              IconButton(
+                                icon: Image.asset('assets/images/remove.png'),
+                                onPressed: () {
+                                  // Remove action
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+                const SizedBox(height: 16),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, animation) => FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position: Tween<Offset>(
+                        begin: const Offset(0, 0.2),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    ),
+                  ),
+                  child: !isKeyboardOpen
+                      ? ElevatedButton(
+                          key: const ValueKey('nova_receita_btn'),
+                          onPressed: () =>
+                              GoRouter.of(context).push('/receitas/add'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: UserColor.primary,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 12,
+                            ),
+                            alignment: Alignment.center,
+                            fixedSize: const Size(210, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                        ]
-                      : [
-                          Expanded(
-                            child: ListApp(
-                              shrinkWrap: true,
-                              children: receitasFiltradas
-                                  .map(
-                                    (receita) => ListTile(
-                                      title: Text(receita.nome),
-                                      trailing: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          IconButton(
-                                            icon: Image.asset(
-                                              'assets/images/edit.png',
-                                            ),
-                                            onPressed: () {
-                                              // Edit action
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: Image.asset(
-                                              'assets/images/remove.png',
-                                            ),
-                                            onPressed: () {
-                                              // Remove action
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 300),
-                            transitionBuilder: (child, animation) =>
-                                FadeTransition(
-                                  opacity: animation,
-                                  child: SlideTransition(
-                                    position: Tween<Offset>(
-                                      begin: const Offset(0, 0.2),
-                                      end: Offset.zero,
-                                    ).animate(animation),
-                                    child: child,
-                                  ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'Nova Receita',
+                                style: TextStyle(
+                                  fontFamily: Font.aleo,
+                                  fontSize: 20,
+                                  color: UserColor.secondaryContainer,
                                 ),
-                            child: !isKeyboardOpen
-                                ? ElevatedButton(
-                                    key: const ValueKey('nova_receita_btn'),
-                                    onPressed: () => GoRouter.of(
-                                      context,
-                                    ).push('/receitas/add'),
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: UserColor.primary,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 12,
-                                      ),
-                                      alignment: Alignment.center,
-                                      fixedSize: const Size(210, 50),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: const [
-                                        Text(
-                                          'Nova Receita',
-                                          style: TextStyle(
-                                            fontFamily: Font.aleo,
-                                            fontSize: 20,
-                                            color: UserColor.secondaryContainer,
-                                          ),
-                                        ),
-                                        SizedBox(width: 8),
-                                        Icon(
-                                          Icons.add_circle_outline,
-                                          color: UserColor.secondaryContainer,
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : const SizedBox.shrink(),
+                              ),
+                              SizedBox(width: 8),
+                              Icon(
+                                Icons.add_circle_outline,
+                                color: UserColor.secondaryContainer,
+                              ),
+                            ],
                           ),
-                        ],
-                );
-              },
-            ),
-          ),
-        ],
-      ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
+              ],
+            );
+          },
+        ),
+      ],
     );
   }
 }

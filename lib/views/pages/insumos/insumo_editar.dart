@@ -40,7 +40,7 @@ class _InsumoEditarState extends State<InsumoEditar> {
     final formattedQuantity = quantityFormatter
         .formatEditUpdate(
           TextEditingValue.empty,
-          TextEditingValue(text: widget.insumo.quantidade.toString()),
+          TextEditingValue(text: (widget.insumo.quantidade * 100).toString()),
         )
         .text;
     quantidadeController = TextEditingController(text: formattedQuantity);
@@ -111,10 +111,10 @@ class _InsumoEditarState extends State<InsumoEditar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarUser(),
-      body: AppBarActions(
+    return SingleChildScrollView(
+      child: Column(
         children: [
+          const SizedBox(height: 32),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(

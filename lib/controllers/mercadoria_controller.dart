@@ -1,3 +1,4 @@
+import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
 import 'package:gestor_empreendimento/models/mercadoria.dart';
 import 'package:gestor_empreendimento/repositories/mercadoria_repository.dart';
@@ -43,5 +44,15 @@ class MercadoriaController extends ChangeNotifier {
   void delete(int id) {
     repository.mercadorias.removeWhere((mercadoria) => mercadoria.id == id);
     notifyListeners();
+  }
+
+  List<Mercadoria> filtrarPorNome(String termo) {
+    return mercadorias
+        .where(
+          (r) => removeDiacritics(
+            r.nome.toLowerCase(),
+          ).contains(removeDiacritics(termo.toLowerCase())),
+        )
+        .toList();
   }
 }
