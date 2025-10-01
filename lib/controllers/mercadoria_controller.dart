@@ -55,4 +55,8 @@ class MercadoriaController extends ChangeNotifier {
         )
         .toList();
   }
+
+  List<String> getNomesMercadorias() {
+    return mercadorias.map((mercadoria) => mercadoria.nome).toList();
+  }
 }

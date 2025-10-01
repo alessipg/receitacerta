@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/views/widgets/app_bar_actions.dart';
-import 'package:gestor_empreendimento/views/widgets/app_bar_user.dart';
 import 'package:gestor_empreendimento/views/widgets/text_field_app.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -33,13 +31,18 @@ class _ReceitasState extends State<Receitas> {
   Widget build(BuildContext context) {
     final bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
-    return Column(
+    return ListView(
       children: [
         Padding(
           padding: const EdgeInsets.all(24.0),
           child: Text(
             'Receitas',
-            style: TextStyle(fontSize: 36, color: UserColor.primary),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 36,
+              color: UserColor.primary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
         TextFieldApp(
@@ -71,22 +74,16 @@ class _ReceitasState extends State<Receitas> {
                       .map(
                         (receita) => ListTile(
                           title: Text(receita.nome),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: Image.asset('assets/images/edit.png'),
-                                onPressed: () {
-                                  // Edit action
-                                },
-                              ),
-                              IconButton(
-                                icon: Image.asset('assets/images/remove.png'),
-                                onPressed: () {
-                                  // Remove action
-                                },
-                              ),
-                            ],
+                          onTap: () {
+                            GoRouter.of(
+                              context,
+                            ).push('/receitas/edit', extra: receita);
+                          },
+                          trailing: IconButton(
+                            icon: Image.asset('assets/images/remove.png'),
+                            onPressed: () {
+                              // Remove action
+                            },
                           ),
                         ),
                       )

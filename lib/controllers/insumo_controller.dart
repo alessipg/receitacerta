@@ -3,7 +3,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:gestor_empreendimento/models/insumo.dart';
 import 'package:gestor_empreendimento/repositories/insumo_repository.dart';
-import 'package:diacritic/diacritic.dart';  
+import 'package:diacritic/diacritic.dart';
+
 class InsumoController extends ChangeNotifier {
   InsumoRepository repository;
   InsumoController(this.repository);
@@ -73,6 +74,7 @@ class InsumoController extends ChangeNotifier {
     repository.insumos.removeWhere((insumo) => insumo.id == id);
     notifyListeners();
   }
+
   List<Insumo> filtrarPorNome(String termo) {
     return insumos
         .where(
@@ -82,5 +84,8 @@ class InsumoController extends ChangeNotifier {
         )
         .toList();
   }
-  
+
+  List<String> getNomesInsumos() {
+    return insumos.map((insumo) => insumo.nome).toList();
+  }
 }

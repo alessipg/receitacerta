@@ -1,9 +1,11 @@
+import 'package:gestor_empreendimento/models/receita.dart';
+import 'package:gestor_empreendimento/views/pages/receitas/receita_editar.dart';
 import 'package:gestor_empreendimento/views/widgets/custom_scaffold.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gestor_empreendimento/views/pages/home.dart';
 import 'package:gestor_empreendimento/views/pages/menu.dart';
 import 'package:gestor_empreendimento/views/pages/receitas/receitas.dart';
-import 'package:gestor_empreendimento/views/pages/mercadorias.dart';
+import 'package:gestor_empreendimento/views/pages/mercadorias/mercadorias.dart';
 import 'package:gestor_empreendimento/views/pages/insumos/insumos.dart';
 import 'package:gestor_empreendimento/views/pages/insumos/insumo_criar.dart';
 import 'package:gestor_empreendimento/views/pages/insumos/insumo_editar.dart';
@@ -42,6 +44,11 @@ final routes = GoRouter(
     GoRoute(
       path: '/receitas/add',
       builder: (context, state) => const CustomScaffold(child: ReceitaCriar()),
+    ),
+    GoRoute(
+      path: '/receitas/edit',
+      builder: (context, state) =>
+          CustomScaffold(child: ReceitaEditar(receita: state.extra as Receita)),
     ),
   ],
 );

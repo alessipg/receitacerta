@@ -25,7 +25,7 @@ class ReceitaController extends ChangeNotifier {
       Receita(
         nome: nome,
         produto: mercadoria,
-        quantidade: qtdMercadoria,
+        qtdMercadoriaGerada: qtdMercadoria,
         materiaPrima: materiaPrima,
       ),
     );

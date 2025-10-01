@@ -41,8 +41,7 @@ class _InsumoCriarState extends State<InsumoCriar> {
       padding: const EdgeInsets.all(8.0),
       child: Form(
         key: _formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: ListView(
           children: [
             Text(
               'Criar Insumo',

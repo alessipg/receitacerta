@@ -10,12 +10,16 @@ class CustomScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarUser(), 
-      body: Column(
-        children : [
-          AppBarActions(),
-          child
-        ],
-      ));
+      resizeToAvoidBottomInset: true, // padrão já é true
+      appBar: AppBarUser(),
+      body: SafeArea(
+        child: Column(
+          children: [
+            AppBarActions(),
+            Expanded(child: child),
+          ],
+        ),
+      ),
+    );
   }
 }

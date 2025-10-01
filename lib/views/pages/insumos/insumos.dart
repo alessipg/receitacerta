@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestor_empreendimento/config/constants.dart';
 import 'package:gestor_empreendimento/controllers/insumo_controller.dart';
+import 'package:gestor_empreendimento/views/widgets/insumos/delete_btn.dart';
 import 'package:gestor_empreendimento/views/widgets/list_app.dart';
 import 'package:gestor_empreendimento/views/widgets/text_field_app.dart';
 import 'package:go_router/go_router.dart';
@@ -26,12 +27,13 @@ class _InsumosState extends State<Insumos> {
   Widget build(BuildContext context) {
     final bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
-    return Column(
+    return ListView(
       children: [
         Padding(
           padding: const EdgeInsets.all(24.0),
           child: Text(
             'Insumos',
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 36,
               color: UserColor.primary,
@@ -82,9 +84,9 @@ class _InsumosState extends State<Insumos> {
                                   ).push('/insumos/edit', extra: insumo);
                                 },
                               ),
-                              IconButton(
-                                icon: Image.asset(Img.remove),
-                                onPressed: () {},
+                              DeleteInsumoButton(
+                                parentContext: context,
+                                insumoId: insumo.id,
                               ),
                             ],
                           ),

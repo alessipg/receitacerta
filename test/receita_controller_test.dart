@@ -40,6 +40,7 @@ void main() {
       id: 1,
       nome: 'Pão',
       custo: 0.0,
+      venda: 0.0,
       quantidade: 0,
       medida: Medida.un,
       isDiscreto: false,

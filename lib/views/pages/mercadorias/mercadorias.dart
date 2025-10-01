@@ -24,14 +24,13 @@ class _MercadoriasState extends State<Mercadorias> {
 
   @override
   Widget build(BuildContext context) {
-    final bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
-
-    return Column(
+    return ListView(
       children: [
         Padding(
           padding: const EdgeInsets.all(24.0),
           child: Text(
             'Mercadorias',
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 36,
               color: UserColor.primary,
