@@ -29,6 +29,37 @@ class _MercadoriaCriarState extends State<MercadoriaCriar> {
     super.dispose();
   }
 
+  void _submit() {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState!.validate()) {
+      final valorVenda = CurrencyInputFormatter.getCleanValue(
+        vendaController.text,
+      );
+
+      final quantidade = QuantityInputFormatter.getCleanValue(
+        quantidadeController.text,
+      );
+      try {
+        context.read<MercadoriaController>().criar(
+          nomeController.text,
+          valorVenda,
+          quantidade,
+          selectedMedida,
+          context.read<ReceitaController>(),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Mercadoria criada com sucesso!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Mercadoria com este nome já existe.')),
+        );
+      }
+
+      GoRouter.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -140,25 +171,7 @@ class _MercadoriaCriarState extends State<MercadoriaCriar> {
                 return Center(
                   child: ElevatedButton(
                     onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        final valorVenda = CurrencyInputFormatter.getCleanValue(
-                          vendaController.text,
-                        );
-
-                        final quantidade = QuantityInputFormatter.getCleanValue(
-                          quantidadeController.text,
-                        );
-
-                        controller.criar(
-                          nomeController.text,
-                          valorVenda,
-                          quantidade,
-                          selectedMedida,
-                          context.read<ReceitaController>(),
-                        );
-                        FocusScope.of(context).unfocus();
-                        GoRouter.of(context).pop();
-                      }
+                      _submit();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: UserColor.primary,

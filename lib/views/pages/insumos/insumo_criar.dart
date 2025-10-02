@@ -39,21 +39,26 @@ class _InsumoCriarState extends State<InsumoCriar> {
       final double quantidade = QuantityInputFormatter.getCleanValue(
         quantidadeController.text,
       );
+      try {
+        context.read<InsumoController>().criar(
+          Insumo(
+            nome: nomeController.text,
+            quantidade: quantidade,
+            id: null,
+            custo: custoPorUnidade,
+            medida: selectedMedida,
+            isDiscreto: false,
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Insumo criado com sucesso!')),
+        );
+      } catch (error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Insumo com este nome já existe")),
+        );
+      }
 
-      context.read<InsumoController>().criar(
-        Insumo(
-          nome: nomeController.text,
-          quantidade: quantidade,
-          id: null,
-          custo: custoPorUnidade,
-          medida: selectedMedida,
-          isDiscreto: false,
-        ),
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Insumo criado com sucesso!')),
-      );
       GoRouter.of(context).pop();
     }
   }

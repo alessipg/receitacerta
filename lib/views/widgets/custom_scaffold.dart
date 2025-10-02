@@ -96,6 +96,7 @@ class CustomScaffold extends StatelessWidget {
           children: [
             AppBarActions(),
             Expanded(child: child),
+            const SizedBox(height: 24),
           ],
         ),
       ),
