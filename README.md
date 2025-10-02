@@ -39,7 +39,9 @@ Os seguintes packages foram utilizados no projeto:
 - `provider`: injeções de dependência e controle de estado.
 - `diacritic`: Remoção de acentos e caracters especiais para buscas por nome.  
 - `intl`: Formatação com base na localização.
-
+- `intl`: Formatação com base na localização.
+-  `flutter_launcher_icons`: Manipulação de icons
+  
 #### Arquitetura
 A arquitetura escolhida para a estrutura do projeto foi a MVC.
 
