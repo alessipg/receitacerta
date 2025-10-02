@@ -17,13 +17,14 @@ void main() {
           create: (context) => InsumoController(InsumoRepository()),
         ),
         ChangeNotifierProvider(
+          create: (context) => MercadoriaController(MercadoriaRepository()),
+        ),
+        ChangeNotifierProvider(
           create: (context) => ReceitaController(
             ReceitaRepository(),
             context.read<InsumoController>(),
+            context.read<MercadoriaController>(),
           ),
-        ),
-        ChangeNotifierProvider(
-          create: (context) => MercadoriaController(MercadoriaRepository()),
         ),
       ],
       child: App(),

@@ -29,12 +29,7 @@ class AppBarActions extends StatelessWidget {
             ),
             child: IconButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Mais opções em breve!'),
-                    duration: Duration(seconds: 2),
-                  ),
-                );
+                Scaffold.of(context).openDrawer(); // abre o Drawer
               },
               icon: Icon(Icons.more_vert, color: Colors.white, size: 30),
             ),

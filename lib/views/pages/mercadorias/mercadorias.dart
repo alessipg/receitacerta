@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/views/widgets/delete_buttons/delete_receita_btn.dart';
+import 'package:gestor_empreendimento/config/constants.dart';
+import 'package:gestor_empreendimento/controllers/mercadoria_controller.dart';
+import 'package:gestor_empreendimento/views/widgets/delete_buttons/delete_mercadoria_btn.dart';
+import 'package:gestor_empreendimento/views/widgets/list_app.dart';
 import 'package:gestor_empreendimento/views/widgets/text_field_app.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:gestor_empreendimento/views/widgets/list_app.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
-import 'package:gestor_empreendimento/controllers/receita_controller.dart';
 
-class Receitas extends StatefulWidget {
-  const Receitas({super.key});
+class Mercadorias extends StatefulWidget {
+  const Mercadorias({super.key});
 
   @override
-  State<Receitas> createState() => _ReceitasState();
+  State<Mercadorias> createState() => _MercadoriasState();
 }
 
-class _ReceitasState extends State<Receitas> {
+class _MercadoriasState extends State<Mercadorias> {
   final TextEditingController nomeController = TextEditingController();
 
   @override
@@ -32,7 +32,7 @@ class _ReceitasState extends State<Receitas> {
         Padding(
           padding: const EdgeInsets.all(24.0),
           child: Text(
-            'Receitas',
+            'Mercadorias',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 36,
@@ -43,41 +43,50 @@ class _ReceitasState extends State<Receitas> {
         ),
         TextFieldApp(
           textController: nomeController,
-          hintText: 'Buscar receita',
+          hintText: 'Buscar mercadoria',
           prefixIcon: const Icon(Icons.search, color: Colors.white),
           onChanged: (_) => setState(() {}),
         ),
-        Consumer<ReceitaController>(
+        Consumer<MercadoriaController>(
           builder: (context, controller, _) {
-            final receitasFiltradas = controller.filtrarPorNome(
+            final mercadoriaFiltradas = controller.filtrarPorNome(
               nomeController.text,
             );
 
             return Column(
               children: [
-                if (receitasFiltradas.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Text(
-                      'Nenhuma receita encontrada.',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: UserColor.secondary,
+                if (mercadoriaFiltradas.isEmpty)
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'Nenhuma mercadoria encontrada.',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: UserColor.secondary,
+                        ),
                       ),
                     ),
                   )
                 else
                   ListApp(
-                    children: receitasFiltradas
+                    children: mercadoriaFiltradas
                         .map(
-                          (receita) => ListTile(
-                            title: Text(receita.nome),
-                            subtitle: Text(
-                              'Custo: R\$ ${receita.custoUnitario.toStringAsFixed(2).replaceAll('.', ',')}',
-                            ),
+                          (mercadoria) => ListTile(
+                            title: Text(mercadoria.nome),
                             contentPadding: const EdgeInsets.only(
                               left: 16,
                               right: 8,
+                            ),
+                            onTap: () {
+                              GoRouter.of(
+                                context,
+                              ).push('/mercadorias/edit', extra: mercadoria);
+                            },
+                            subtitle: Text(
+                              'Preço: R\$ ${mercadoria.venda.toStringAsFixed(2).replaceAll('.', ',')} \n'
+                              'Estoque: ${mercadoria.quantidade} ${mercadoria.medida.sigla} \n'
+                              'Menor custo: R\$ ${mercadoria.custo.toStringAsFixed(2).replaceAll('.', ',')}',
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
@@ -85,14 +94,15 @@ class _ReceitasState extends State<Receitas> {
                                 IconButton(
                                   icon: Image.asset(Img.edit),
                                   onPressed: () {
-                                    GoRouter.of(
-                                      context,
-                                    ).push('/receitas/edit', extra: receita);
+                                    GoRouter.of(context).push(
+                                      '/mercadorias/edit',
+                                      extra: mercadoria,
+                                    );
                                   },
                                 ),
-                                DeleteReceitaButton(
+                                DeleteMercadoriaButton(
                                   parentContext: context,
-                                  receitaId: receita.id,
+                                  mercadoriaId: mercadoria.id,
                                 ),
                               ],
                             ),
@@ -103,7 +113,7 @@ class _ReceitasState extends State<Receitas> {
 
                 const SizedBox(height: 16),
 
-                // Botão sempre aparece (independente de ter ou não receitas)
+                // Botão sempre aparece (independente de ter ou não mercadorias)
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   transitionBuilder: (child, animation) => FadeTransition(
@@ -118,9 +128,9 @@ class _ReceitasState extends State<Receitas> {
                   ),
                   child: !isKeyboardOpen
                       ? ElevatedButton(
-                          key: const ValueKey('nova_receita_btn'),
+                          key: const ValueKey('nova_mercadoria_btn'),
                           onPressed: () =>
-                              GoRouter.of(context).push('/receitas/add'),
+                              GoRouter.of(context).push('/mercadorias/add'),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: UserColor.primary,
                             padding: const EdgeInsets.symmetric(
@@ -137,7 +147,7 @@ class _ReceitasState extends State<Receitas> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
                               Text(
-                                'Nova Receita',
+                                'Nova Mercadoria',
                                 style: TextStyle(
                                   fontFamily: Font.aleo,
                                   fontSize: 20,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestor_empreendimento/config/constants.dart';
 import 'package:gestor_empreendimento/controllers/insumo_controller.dart';
+import 'package:gestor_empreendimento/views/widgets/delete_buttons/delete_insumo_btn.dart';
 import 'package:gestor_empreendimento/views/widgets/list_app.dart';
 import 'package:gestor_empreendimento/views/widgets/text_field_app.dart';
 import 'package:go_router/go_router.dart';
@@ -26,12 +27,13 @@ class _InsumosState extends State<Insumos> {
   Widget build(BuildContext context) {
     final bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
 
-    return Column(
+    return ListView(
       children: [
         Padding(
           padding: const EdgeInsets.all(24.0),
           child: Text(
             'Insumos',
+            textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 36,
               color: UserColor.primary,
@@ -51,48 +53,54 @@ class _InsumosState extends State<Insumos> {
               nomeController.text,
             );
 
-            if (insumosFiltrados.isEmpty) {
-              return const Center(
-                child: Text(
-                  'Nenhum insumo encontrado.',
-                  style: TextStyle(fontSize: 20, color: UserColor.secondary),
-                ),
-              );
-            }
-
             return Column(
               children: [
-                ListApp(
-                  children: insumosFiltrados
-                      .map(
-                        (insumo) => ListTile(
-                          title: Text(insumo.nome),
-                          contentPadding: const EdgeInsets.only(
-                            left: 16,
-                            right: 8,
+                if (insumosFiltrados.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Nenhum insumo encontrado.',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: UserColor.secondary,
+                      ),
+                    ),
+                  )
+                else
+                  ListApp(
+                    children: insumosFiltrados
+                        .map(
+                          (insumo) => ListTile(
+                            title: Text(insumo.nome),
+                            contentPadding: const EdgeInsets.only(
+                              left: 16,
+                              right: 8,
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Image.asset(Img.edit),
+                                  onPressed: () {
+                                    GoRouter.of(
+                                      context,
+                                    ).push('/insumos/edit', extra: insumo);
+                                  },
+                                ),
+                                DeleteInsumoButton(
+                                  parentContext: context,
+                                  insumoId: insumo.id,
+                                ),
+                              ],
+                            ),
                           ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: Image.asset(Img.edit),
-                                onPressed: () {
-                                  GoRouter.of(
-                                    context,
-                                  ).push('/insumos/edit', extra: insumo);
-                                },
-                              ),
-                              IconButton(
-                                icon: Image.asset(Img.remove),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
+                        )
+                        .toList(),
+                  ),
+
                 const SizedBox(height: 16),
+
+                // Botão sempre aparece (independente de ter ou não insumos)
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   transitionBuilder: (child, animation) => FadeTransition(

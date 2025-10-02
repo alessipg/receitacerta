@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 class CurrencyInputFormatter extends TextInputFormatter {
   final NumberFormat _formatter = NumberFormat.currency(
     locale: 'pt_BR', // or 'en_US'
-    symbol: 'R\$', 
+    symbol: 'R\$',
     decimalDigits: 2,
   );
 
@@ -39,13 +39,11 @@ class CurrencyInputFormatter extends TextInputFormatter {
     // Remove todos os caracteres que não são dígitos, vírgula ou ponto
     final cleaned = text.replaceAll(RegExp(r'[^\d,.]'), '');
 
-    // Substitui vírgula por ponto para o parse funcionar
-    final normalized = cleaned.replaceAll(',', '.');
+    // remove all thousand separators (.)
+    String noDots = cleaned.replaceAll('.', '');
+    // replace decimal comma with dot
+    String normalized = noDots.replaceAll(',', '.');
 
-    try {
-      return double.parse(normalized);
-    } catch (e) {
-      return 0.0;
-    }
+    return double.parse(normalized);
   }
 }

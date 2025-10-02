@@ -1,7 +1,6 @@
 import 'package:gestor_empreendimento/models/produto.dart';
 
 class Insumo extends Produto {
-
   Insumo({
     super.id,
     required super.nome,
@@ -11,4 +10,12 @@ class Insumo extends Produto {
     required super.isDiscreto,
   });
 
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'nome': nome,
+    'quantidade': quantidade,
+    'custo': custo,
+    'medida': medida.toString(), // ou medida.index
+    'isDiscreto': isDiscreto,
+  };
 }

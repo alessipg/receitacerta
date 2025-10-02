@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gestor_empreendimento/controllers/insumo_controller.dart';
 import 'package:gestor_empreendimento/utils/currency_input_formatter.dart';
 import 'package:gestor_empreendimento/utils/quantity_input_formatter.dart';
-import 'package:gestor_empreendimento/views/widgets/app_bar_actions.dart';
-import 'package:gestor_empreendimento/views/widgets/app_bar_user.dart';
 import 'package:gestor_empreendimento/models/insumo.dart';
 import 'package:gestor_empreendimento/config/constants.dart';
 import 'package:gestor_empreendimento/config/medida.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'dart:math' as math;
 
 class InsumoEditar extends StatefulWidget {
   const InsumoEditar({super.key, required this.insumo});
@@ -35,26 +34,30 @@ class _InsumoEditarState extends State<InsumoEditar> {
     super.initState();
     nomeController = TextEditingController(text: widget.insumo.nome);
 
-    // Format quantity with the appropriate formatter
-    final quantityFormatter = QuantityInputFormatter();
-    final formattedQuantity = quantityFormatter
+    // --- Quantidade (3 casas decimais fixas) ---
+    final rawQuantity = (widget.insumo.quantidade * math.pow(10, 3))
+        .toInt()
+        .toString();
+
+    final formattedQuantity = QuantityInputFormatter()
         .formatEditUpdate(
           TextEditingValue.empty,
-          TextEditingValue(text: (widget.insumo.quantidade * 100).toString()),
+          TextEditingValue(text: rawQuantity),
         )
         .text;
+
     quantidadeController = TextEditingController(text: formattedQuantity);
 
-    // Format cost with the appropriate formatter
-    final currencyFormatter = CurrencyInputFormatter();
-    final formattedCost = currencyFormatter
+    // --- Custo (2 casas decimais fixas) ---
+    final rawCost = (widget.insumo.custo * 100).toInt().toString();
+
+    final formattedCost = CurrencyInputFormatter()
         .formatEditUpdate(
           TextEditingValue.empty,
-          TextEditingValue(
-            text: (widget.insumo.custo * 100).toInt().toString(),
-          ),
+          TextEditingValue(text: rawCost),
         )
         .text;
+
     custoController = TextEditingController(text: formattedCost);
 
     selectedMedida = widget.insumo.medida;
@@ -111,141 +114,129 @@ class _InsumoEditarState extends State<InsumoEditar> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(height: 32),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          children: [
+            // Nome e botão de edição
+            if (!_isEditing)
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Nome e botão de edição
-                  if (!_isEditing)
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            nomeController.text,
-                            style: const TextStyle(
-                              fontSize: 28,
-                              color: UserColor.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                        IconButton(
-                          padding: EdgeInsets.zero,
-                          constraints: BoxConstraints.tightFor(
-                            width: 32,
-                            height: 32,
-                          ),
-                          icon: Image.asset(Img.edit),
-                          onPressed: _toggleEdit,
-                        ),
-                      ],
-                    )
-                  else
-                    TextFormField(
-                      controller: nomeController,
-                      focusNode: _focusNode,
-                      decoration: const InputDecoration(
-                        labelText: 'Nome',
-                        border: OutlineInputBorder(),
-                      ),
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: UserColor.primary,
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Insira um nome válido';
-                        }
-                        return null;
-                      },
-                      onFieldSubmitted: (_) => _finishEdit(),
-                    ),
-                  const SizedBox(height: 24),
-
-                  // Quantidade
-                  TextFormField(
-                    controller: quantidadeController,
-                    inputFormatters: [QuantityInputFormatter()],
-                    decoration: InputDecoration(
-                      labelText: 'Quantidade em ${selectedMedida.nome}',
-                      border: const OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Insira uma quantidade';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Custo
-                  TextFormField(
-                    controller: custoController,
-                    inputFormatters: [CurrencyInputFormatter()],
-                    decoration: InputDecoration(
-                      labelText:
-                          'Custo por ${selectedMedida.nome.substring(0, selectedMedida.nome.length - 1)}',
-                      border: const OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Medida dropdown
-                  DropdownButtonFormField<Medida>(
-                    initialValue: selectedMedida,
-                    decoration: const InputDecoration(
-                      labelText: 'Medida',
-                      border: OutlineInputBorder(),
-                    ),
-                    items: Medida.values.map((Medida medida) {
-                      return DropdownMenuItem<Medida>(
-                        value: medida,
-                        child: Text(medida.nome),
-                      );
-                    }).toList(),
-                    onChanged: (Medida? newValue) {
-                      if (newValue != null) {
-                        setState(() {
-                          selectedMedida = newValue;
-                        });
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 32),
-
-                  // Botão Salvar
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: _submit,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: UserColor.primary,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 12,
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        "Editar ${nomeController.text}",
+                        style: const TextStyle(
+                          fontSize: 28,
+                          color: UserColor.primary,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      child: const Text(
-                        'Salvar alterações',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
                     ),
+                  ),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    constraints: BoxConstraints.tightFor(width: 32, height: 32),
+                    icon: Image.asset(Img.edit),
+                    onPressed: _toggleEdit,
                   ),
                 ],
+              )
+            else
+              TextFormField(
+                controller: nomeController,
+                focusNode: _focusNode,
+                decoration: const InputDecoration(
+                  labelText: 'Nome',
+                  border: OutlineInputBorder(),
+                ),
+                style: const TextStyle(fontSize: 18, color: UserColor.primary),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Insira um nome válido';
+                  }
+                  return null;
+                },
+                onFieldSubmitted: (_) => _finishEdit(),
+              ),
+            const SizedBox(height: 24),
+
+            // Quantidade
+            TextFormField(
+              controller: quantidadeController,
+              inputFormatters: [QuantityInputFormatter()],
+              decoration: InputDecoration(
+                labelText: 'Quantidade em ${selectedMedida.nome}',
+                border: const OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Insira uma quantidade';
+                }
+                return null;
+              },
+            ),
+            const SizedBox(height: 16),
+
+            // Custo
+            TextFormField(
+              controller: custoController,
+              inputFormatters: [CurrencyInputFormatter()],
+              decoration: InputDecoration(
+                labelText:
+                    'Custo por ${selectedMedida.nome.substring(0, selectedMedida.nome.length - 1)}',
+                border: const OutlineInputBorder(),
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            const SizedBox(height: 16),
+
+            // Medida dropdown
+            DropdownButtonFormField<Medida>(
+              initialValue: selectedMedida,
+              decoration: const InputDecoration(
+                labelText: 'Medida',
+                border: OutlineInputBorder(),
+              ),
+              items: Medida.values.map((Medida medida) {
+                return DropdownMenuItem<Medida>(
+                  value: medida,
+                  child: Text(medida.nome),
+                );
+              }).toList(),
+              onChanged: (Medida? newValue) {
+                if (newValue != null) {
+                  setState(() {
+                    selectedMedida = newValue;
+                  });
+                }
+              },
+            ),
+            const SizedBox(height: 32),
+
+            // Botão Salvar
+            Center(
+              child: ElevatedButton(
+                onPressed: _submit,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: UserColor.primary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                ),
+                child: const Text(
+                  'Salvar alterações',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
