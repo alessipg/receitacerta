@@ -135,6 +135,7 @@ dart analyze
 - [ ] Persistência (ex.: Hive/Sqflite)
 - [ ] Estoque: entrada/saída integrada às receitas
 - [ ] Relatórios de custo/margem
+- [ ] Autenticação com Google
 - [ ] PDV com QRCode
 
 
