@@ -229,39 +229,54 @@ class _ReceitaCriarState extends State<ReceitaCriar> {
           Consumer2<ReceitaController, MercadoriaController>(
             builder: (context, receitaController, mercadoriaController, _) {
               // Button
-              return ElevatedButton(
-                onPressed: () {
-                  final materiaPrima = controllers.map((nome, controller) {
-                    final insumo = context
-                        .read<InsumoController>()
-                        .getAll()
-                        .firstWhere(
-                          (i) => i.nome == nome,
-                          orElse: () =>
-                              throw Exception('Insumo $nome não encontrado.'),
+              return Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final materiaPrima = controllers.map((nome, controller) {
+                        final insumo = context
+                            .read<InsumoController>()
+                            .getAll()
+                            .firstWhere(
+                              (i) => i.nome == nome,
+                              orElse: () => throw Exception(
+                                'Insumo $nome não encontrado.',
+                              ),
+                            );
+                        final quantidade = double.tryParse(
+                          controller.text.replaceAll(',', '.'),
                         );
-                    final quantidade = double.tryParse(
-                      controller.text.replaceAll(',', '.'),
-                    );
-                    if (quantidade == null) {
-                      throw Exception(
-                        'Quantidade inválida para o insumo $nome.',
+                        if (quantidade == null) {
+                          throw Exception(
+                            'Quantidade inválida para o insumo $nome.',
+                          );
+                        }
+                        return MapEntry(insumo, quantidade);
+                      });
+
+                      receitaController.criar(
+                        nomeController.text,
+                        materiaPrima,
+                        selectedMercadoria!,
+                        qtdMercadoria,
                       );
+
+                      FocusScope.of(context).unfocus();
+                      GoRouter.of(context).pop();
                     }
-                    return MapEntry(insumo, quantidade);
-                  });
-
-                  receitaController.criar(
-                    nomeController.text,
-                    materiaPrima,
-                    selectedMercadoria!,
-                    qtdMercadoria,
-                  );
-
-                  FocusScope.of(context).unfocus();
-                  GoRouter.of(context).pop();
-                },
-                child: const Text('Adicionar'),
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: UserColor.primary,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                  ),
+                  child: const Text(
+                    'Adicionar',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
               );
             },
           ),

@@ -126,12 +126,14 @@ class _InsumoEditarState extends State<InsumoEditar> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Text(
-                      nomeController.text,
-                      style: const TextStyle(
-                        fontSize: 28,
-                        color: UserColor.primary,
-                        fontWeight: FontWeight.bold,
+                    child: Center(
+                      child: Text(
+                        "Editar ${nomeController.text}",
+                        style: const TextStyle(
+                          fontSize: 28,
+                          color: UserColor.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -195,7 +197,7 @@ class _InsumoEditarState extends State<InsumoEditar> {
 
             // Medida dropdown
             DropdownButtonFormField<Medida>(
-              value: selectedMedida,
+              initialValue: selectedMedida,
               decoration: const InputDecoration(
                 labelText: 'Medida',
                 border: OutlineInputBorder(),
@@ -223,7 +225,7 @@ class _InsumoEditarState extends State<InsumoEditar> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: UserColor.primary,
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 32,
+                    horizontal: 24,
                     vertical: 12,
                   ),
                 ),

@@ -33,10 +33,33 @@ class _InsumoCriarState extends State<InsumoCriar> {
     super.dispose();
   }
 
+  void _submit() {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState!.validate()) {
+      final double quantidade = QuantityInputFormatter.getCleanValue(
+        quantidadeController.text,
+      );
+
+      context.read<InsumoController>().criar(
+        Insumo(
+          nome: nomeController.text,
+          quantidade: quantidade,
+          id: null,
+          custo: custoPorUnidade,
+          medida: selectedMedida,
+          isDiscreto: false,
+        ),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Insumo criado com sucesso!')),
+      );
+      GoRouter.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final insumoController = context.watch<InsumoController>();
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Form(
@@ -61,6 +84,33 @@ class _InsumoCriarState extends State<InsumoCriar> {
                   return 'Por favor, insira um nome.';
                 }
                 return null;
+              },
+            ),
+            const SizedBox(height: 16),
+
+            DropdownButtonFormField<Medida>(
+              initialValue: selectedMedida,
+              decoration: const InputDecoration(
+                labelText: 'Medida',
+                border: OutlineInputBorder(),
+              ),
+              items: Medida.values.map((Medida medida) {
+                return DropdownMenuItem<Medida>(
+                  value: medida,
+                  child: Row(
+                    children: [
+                      Text(medida.nome.toString()),
+                      Text(' (${medida.toString().split('.').last})'),
+                    ],
+                  ),
+                );
+              }).toList(),
+              onChanged: (Medida? newValue) {
+                if (newValue != null) {
+                  setState(() {
+                    selectedMedida = newValue;
+                  });
+                }
               },
             ),
             const SizedBox(height: 16),
@@ -131,59 +181,27 @@ class _InsumoCriarState extends State<InsumoCriar> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
             // Dropdown
-            DropdownButtonFormField<Medida>(
-              initialValue: selectedMedida,
-              decoration: const InputDecoration(
-                labelText: 'Medida',
-                border: OutlineInputBorder(),
-              ),
-              items: Medida.values.map((Medida medida) {
-                return DropdownMenuItem<Medida>(
-                  value: medida,
-                  child: Row(
-                    children: [
-                      Text(medida.nome.toString()),
-                      Text(' (${medida.toString().split('.').last})'),
-                    ],
-                  ),
-                );
-              }).toList(),
-              onChanged: (Medida? newValue) {
-                if (newValue != null) {
-                  setState(() {
-                    selectedMedida = newValue;
-                  });
-                }
-              },
-            ),
             const SizedBox(height: 16),
 
             // Button
-            ElevatedButton(
-              onPressed: () {
-                if (_formKey.currentState?.validate() ?? false) {
-                  final double quantidade =
-                      QuantityInputFormatter.getCleanValue(
-                        quantidadeController.text,
-                      );
-
-                  insumoController.criar(
-                    Insumo(
-                      nome: nomeController.text,
-                      quantidade: quantidade,
-                      id: null,
-                      custo: custoPorUnidade,
-                      medida: selectedMedida,
-                      isDiscreto: false,
-                    ),
-                  );
-                  FocusScope.of(context).unfocus();
-                  GoRouter.of(context).pop();
-                }
-              },
-              child: const Text('Adicionar'),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  _submit();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: UserColor.primary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                ),
+                child: const Text(
+                  'Adicionar',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ),
             ),
           ],
         ),

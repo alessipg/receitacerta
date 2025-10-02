@@ -1,11 +1,13 @@
 import 'package:gestor_empreendimento/models/produto.dart';
 
 class Mercadoria extends Produto {
+  final double venda;
+
   Mercadoria({
     super.id,
     required super.nome,
     required super.custo,
-    required venda,
+    required this.venda,
     required super.quantidade,
     required super.medida,
     required super.isDiscreto,

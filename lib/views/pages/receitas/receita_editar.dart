@@ -107,24 +107,36 @@ class _ReceitaEditarState extends State<ReceitaEditar> {
           // Botão salvar (apenas nome é atualizado)
           Consumer<ReceitaController>(
             builder: (context, receitaController, _) {
-              return ElevatedButton(
-                onPressed: () {
-                  if (!_formKey.currentState!.validate()) return;
+              return Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (!_formKey.currentState!.validate()) return;
 
-                  final receitaAtualizada = Receita(
-                    id: receita.id,
-                    nome: nomeController.text,
-                    materiaPrima: receita.consumoPorUnidade,
-                    produto: receita.produto,
-                    qtdMercadoriaGerada: 1, // valor já usado no construtor
-                  );
+                    final receitaAtualizada = Receita(
+                      id: receita.id,
+                      nome: nomeController.text,
+                      materiaPrima: receita.consumoPorUnidade,
+                      produto: receita.produto,
+                      qtdMercadoriaGerada: 1, // valor já usado no construtor
+                    );
 
-                  receitaController.update(receitaAtualizada);
+                    receitaController.update(receitaAtualizada);
 
-                  FocusScope.of(context).unfocus();
-                  GoRouter.of(context).pop();
-                },
-                child: const Text('Salvar Alterações'),
+                    FocusScope.of(context).unfocus();
+                    GoRouter.of(context).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: UserColor.primary,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                  ),
+                  child: const Text(
+                    'Salvar Alterações',
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
               );
             },
           ),

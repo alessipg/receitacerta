@@ -10,7 +10,7 @@ class Receita {
       {}; // chave: insumo, valor: quantidade por unidade
 
   Receita({
-    this.id,
+    required this.id,
     required this.nome,
     required materiaPrima,
     required this.produto,

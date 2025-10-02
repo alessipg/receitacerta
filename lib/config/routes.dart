@@ -1,4 +1,7 @@
+import 'package:gestor_empreendimento/models/mercadoria.dart';
 import 'package:gestor_empreendimento/models/receita.dart';
+import 'package:gestor_empreendimento/views/pages/mercadorias/mercadoria_criar.dart';
+import 'package:gestor_empreendimento/views/pages/mercadorias/mercadoria_editar.dart';
 import 'package:gestor_empreendimento/views/pages/receitas/receita_editar.dart';
 import 'package:gestor_empreendimento/views/widgets/custom_scaffold.dart';
 import 'package:go_router/go_router.dart';
@@ -49,6 +52,17 @@ final routes = GoRouter(
       path: '/receitas/edit',
       builder: (context, state) =>
           CustomScaffold(child: ReceitaEditar(receita: state.extra as Receita)),
+    ),
+    GoRoute(
+      path: '/mercadorias/add',
+      builder: (context, state) =>
+          const CustomScaffold(child: MercadoriaCriar()),
+    ),
+    GoRoute(
+      path: '/mercadorias/edit',
+      builder: (context, state) => CustomScaffold(
+        child: MercadoriaEditar(mercadoria: state.extra as Mercadoria),
+      ),
     ),
   ],
 );
