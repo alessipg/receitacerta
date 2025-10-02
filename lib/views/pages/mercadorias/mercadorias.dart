@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestor_empreendimento/config/constants.dart';
 import 'package:gestor_empreendimento/controllers/mercadoria_controller.dart';
+import 'package:gestor_empreendimento/views/widgets/delete_buttons/delete_mercadoria_btn.dart';
 import 'package:gestor_empreendimento/views/widgets/list_app.dart';
 import 'package:gestor_empreendimento/views/widgets/text_field_app.dart';
 import 'package:go_router/go_router.dart';
@@ -51,56 +52,68 @@ class _MercadoriasState extends State<Mercadorias> {
             final mercadoriaFiltradas = controller.filtrarPorNome(
               nomeController.text,
             );
-            if (mercadoriaFiltradas.isEmpty) {
-              return const Center(
-                child: Text(
-                  'Nenhuma mercadoria encontrada.',
-                  style: TextStyle(fontSize: 20, color: UserColor.secondary),
-                ),
-              );
-            }
+
             return Column(
               children: [
-                ListApp(
-                  children: mercadoriaFiltradas
-                      .map(
-                        (mercadoria) => ListTile(
-                          title: Text(mercadoria.nome),
-                          contentPadding: const EdgeInsets.only(
-                            left: 16,
-                            right: 8,
-                          ),
-                          onTap: () {
-                            GoRouter.of(
-                              context,
-                            ).push('/mercadorias/edit', extra: mercadoria);
-                          },
-                          subtitle: Text(
-                            'Preço: R\$ ${mercadoria.venda.toStringAsFixed(2).replaceAll('.', ',')} \nEstoque: ${mercadoria.quantidade} ${mercadoria.medida.sigla} \nMenor custo: R\$ ${mercadoria.custo.toStringAsFixed(2).replaceAll('.', ',')}',
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: Image.asset(Img.edit),
-                                onPressed: () {
-                                  GoRouter.of(context).push(
-                                    '/mercadorias/edit',
-                                    extra: mercadoria,
-                                  );
-                                },
-                              ),
-                              IconButton(
-                                icon: Image.asset(Img.remove),
-                                onPressed: () {},
-                              ),
-                            ],
-                          ),
+                if (mercadoriaFiltradas.isEmpty)
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: Text(
+                        'Nenhuma mercadoria encontrada.',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: UserColor.secondary,
                         ),
-                      )
-                      .toList(),
-                ),
+                      ),
+                    ),
+                  )
+                else
+                  ListApp(
+                    children: mercadoriaFiltradas
+                        .map(
+                          (mercadoria) => ListTile(
+                            title: Text(mercadoria.nome),
+                            contentPadding: const EdgeInsets.only(
+                              left: 16,
+                              right: 8,
+                            ),
+                            onTap: () {
+                              GoRouter.of(
+                                context,
+                              ).push('/mercadorias/edit', extra: mercadoria);
+                            },
+                            subtitle: Text(
+                              'Preço: R\$ ${mercadoria.venda.toStringAsFixed(2).replaceAll('.', ',')} \n'
+                              'Estoque: ${mercadoria.quantidade} ${mercadoria.medida.sigla} \n'
+                              'Menor custo: R\$ ${mercadoria.custo.toStringAsFixed(2).replaceAll('.', ',')}',
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Image.asset(Img.edit),
+                                  onPressed: () {
+                                    GoRouter.of(context).push(
+                                      '/mercadorias/edit',
+                                      extra: mercadoria,
+                                    );
+                                  },
+                                ),
+                                DeleteMercadoriaButton(
+                                  parentContext: context,
+                                  mercadoriaId: mercadoria.id,
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+
                 const SizedBox(height: 16),
+
+                // Botão sempre aparece (independente de ter ou não mercadorias)
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   transitionBuilder: (child, animation) => FadeTransition(

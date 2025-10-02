@@ -21,4 +21,11 @@ class Mercadoria extends Produto {
     'medida': medida.toString(), // ou medida.index
     'isDiscreto': isDiscreto,
   };
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) || other is Mercadoria && id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
 }

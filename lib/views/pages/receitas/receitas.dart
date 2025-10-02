@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestor_empreendimento/views/widgets/delete_buttons/delete_receita_btn.dart';
 import 'package:gestor_empreendimento/views/widgets/text_field_app.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +18,6 @@ class _ReceitasState extends State<Receitas> {
   final TextEditingController nomeController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     nomeController.dispose();
     super.dispose();
@@ -38,7 +34,7 @@ class _ReceitasState extends State<Receitas> {
           child: Text(
             'Receitas',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 36,
               color: UserColor.primary,
               fontWeight: FontWeight.bold,
@@ -57,42 +53,57 @@ class _ReceitasState extends State<Receitas> {
               nomeController.text,
             );
 
-            if (receitasFiltradas.isEmpty) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text(
-                  'Nenhuma receita encontrada.',
-                  style: TextStyle(fontSize: 20, color: UserColor.secondary),
-                ),
-              );
-            }
-
             return Column(
               children: [
-                ListApp(
-                  children: receitasFiltradas
-                      .map(
-                        (receita) => ListTile(
-                          title: Text(receita.nome),
-                          subtitle: Text(
-                            'Custo: R\$ ${receita.custoUnitario.toStringAsFixed(2).replaceAll('.', ',')}',
+                if (receitasFiltradas.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Nenhuma receita encontrada.',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: UserColor.secondary,
+                      ),
+                    ),
+                  )
+                else
+                  ListApp(
+                    children: receitasFiltradas
+                        .map(
+                          (receita) => ListTile(
+                            title: Text(receita.nome),
+                            subtitle: Text(
+                              'Custo: R\$ ${receita.custoUnitario.toStringAsFixed(2).replaceAll('.', ',')}',
+                            ),
+                            contentPadding: const EdgeInsets.only(
+                              left: 16,
+                              right: 8,
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: Image.asset(Img.edit),
+                                  onPressed: () {
+                                    GoRouter.of(
+                                      context,
+                                    ).push('/receitas/edit', extra: receita);
+                                  },
+                                ),
+                                DeleteReceitaButton(
+                                  parentContext: context,
+                                  receitaId: receita.id,
+                                ),
+                              ],
+                            ),
                           ),
-                          onTap: () {
-                            GoRouter.of(
-                              context,
-                            ).push('/receitas/edit', extra: receita);
-                          },
-                          trailing: IconButton(
-                            icon: Image.asset('assets/images/remove.png'),
-                            onPressed: () {
-                              // Remove action
-                            },
-                          ),
-                        ),
-                      )
-                      .toList(),
-                ),
+                        )
+                        .toList(),
+                  ),
+
                 const SizedBox(height: 16),
+
+                // Botão sempre aparece (independente de ter ou não receitas)
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300),
                   transitionBuilder: (child, animation) => FadeTransition(
