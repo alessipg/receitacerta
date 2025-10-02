@@ -54,7 +54,10 @@ class MercadoriaController extends ChangeNotifier {
     Medida medida,
     ReceitaController receitaController,
   ) {
-    if (repository.mercadorias.any((element) => element.nome == nome)) {
+    if (repository.mercadorias.any(
+      (element) =>
+          element.nome.trim().toLowerCase() == nome.trim().toLowerCase(),
+    )) {
       throw Exception('Mercadoria com nome ${nome} já existe.');
     }
     final menor = menorCusto(nome, receitaController);

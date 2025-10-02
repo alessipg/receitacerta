@@ -84,9 +84,9 @@ class _MercadoriasState extends State<Mercadorias> {
                               ).push('/mercadorias/edit', extra: mercadoria);
                             },
                             subtitle: Text(
-                              'Preço: R\$ ${mercadoria.venda.toStringAsFixed(2).replaceAll('.', ',')} \n'
+                              'Preço: R\$ ${mercadoria.venda.toStringAsFixed(2).replaceAll('.', ',')} por ${mercadoria.medida.sigla}\n'
                               'Estoque: ${mercadoria.quantidade} ${mercadoria.medida.sigla} \n'
-                              'Menor custo: R\$ ${mercadoria.custo.toStringAsFixed(2).replaceAll('.', ',')}',
+                              'Menor custo: R\$ ${mercadoria.custo.toStringAsFixed(2).replaceAll('.', ',')} por ${mercadoria.medida.sigla}',
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,

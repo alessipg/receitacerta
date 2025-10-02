@@ -36,6 +36,44 @@ class _ReceitaCriarState extends State<ReceitaCriar> {
     super.dispose();
   }
 
+  void _submit() {
+    FocusScope.of(context).unfocus();
+
+    if (_formKey.currentState!.validate()) {
+      try {
+        final materiaPrima = controllers.map((nome, controller) {
+          final insumo = context.read<InsumoController>().getAll().firstWhere(
+            (i) => i.nome == nome,
+            orElse: () => throw Exception('Insumo $nome não encontrado.'),
+          );
+          final quantidade = double.tryParse(
+            controller.text.replaceAll(',', '.'),
+          );
+          if (quantidade == null) {
+            throw Exception('Quantidade inválida para o insumo $nome.');
+          }
+          return MapEntry(insumo, quantidade);
+        });
+
+        context.read<ReceitaController>().criar(
+          nomeController.text,
+          materiaPrima,
+          selectedMercadoria!,
+          qtdMercadoria,
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Receita criada com sucesso!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("Erro ao criar receita")));
+      }
+
+      GoRouter.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -232,38 +270,7 @@ class _ReceitaCriarState extends State<ReceitaCriar> {
               return Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final materiaPrima = controllers.map((nome, controller) {
-                        final insumo = context
-                            .read<InsumoController>()
-                            .getAll()
-                            .firstWhere(
-                              (i) => i.nome == nome,
-                              orElse: () => throw Exception(
-                                'Insumo $nome não encontrado.',
-                              ),
-                            );
-                        final quantidade = double.tryParse(
-                          controller.text.replaceAll(',', '.'),
-                        );
-                        if (quantidade == null) {
-                          throw Exception(
-                            'Quantidade inválida para o insumo $nome.',
-                          );
-                        }
-                        return MapEntry(insumo, quantidade);
-                      });
-
-                      receitaController.criar(
-                        nomeController.text,
-                        materiaPrima,
-                        selectedMercadoria!,
-                        qtdMercadoria,
-                      );
-
-                      FocusScope.of(context).unfocus();
-                      GoRouter.of(context).pop();
-                    }
+                    _submit();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: UserColor.primary,

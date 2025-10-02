@@ -93,21 +93,28 @@ class _InsumoEditarState extends State<InsumoEditar> {
   void _submit() {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
-      context.read<InsumoController>().update(
-        Insumo(
-          id: widget.insumo.id,
-          nome: nomeController.text,
-          quantidade: QuantityInputFormatter.getCleanValue(
-            quantidadeController.text,
+      try {
+        context.read<InsumoController>().update(
+          Insumo(
+            id: widget.insumo.id,
+            nome: nomeController.text,
+            quantidade: QuantityInputFormatter.getCleanValue(
+              quantidadeController.text,
+            ),
+            custo: CurrencyInputFormatter.getCleanValue(custoController.text),
+            medida: selectedMedida,
+            isDiscreto: widget.insumo.isDiscreto,
           ),
-          custo: CurrencyInputFormatter.getCleanValue(custoController.text),
-          medida: selectedMedida,
-          isDiscreto: widget.insumo.isDiscreto,
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Insumo atualizado com sucesso!')),
-      );
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Insumo atualizado com sucesso!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Insumo com este id não encontrado.")),
+        );
+      }
+
       GoRouter.of(context).pop();
     }
   }

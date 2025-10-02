@@ -47,20 +47,29 @@ class _MercadoriaEditarState extends State<MercadoriaEditar> {
         quantidadeController.text,
       );
 
-      context.read<MercadoriaController>().update(
-        Mercadoria(
-          id: widget.mercadoria.id,
-          nome: nomeController.text,
-          custo: widget.mercadoria.custo,
-          venda: valorVenda,
-          quantidade: quantidade,
-          medida: widget.mercadoria.medida,
-          isDiscreto: widget.mercadoria.isDiscreto,
-        ),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Mercadoria atualizada com sucesso!')),
-      );
+      try {
+        context.read<MercadoriaController>().update(
+          Mercadoria(
+            id: widget.mercadoria.id,
+            nome: nomeController.text,
+            custo: widget.mercadoria.custo,
+            venda: valorVenda,
+            quantidade: quantidade,
+            medida: widget.mercadoria.medida,
+            isDiscreto: widget.mercadoria.isDiscreto,
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Mercadoria atualizada com sucesso!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Mercadoria com este id não encontrada.'),
+          ),
+        );
+      }
+
       Navigator.pop(context, widget.mercadoria);
     }
   }

@@ -30,6 +30,32 @@ class _ReceitaEditarState extends State<ReceitaEditar> {
     super.dispose();
   }
 
+  void _submit() {
+    FocusScope.of(context).unfocus();
+    if (!_formKey.currentState!.validate()) return;
+    try {
+      final receitaAtualizada = Receita(
+        id: widget.receita.id,
+        nome: nomeController.text,
+        materiaPrima: widget.receita.consumoPorUnidade,
+        produto: widget.receita.produto,
+        qtdMercadoriaGerada: 1, // valor já usado no construtor
+      );
+
+      context.read<ReceitaController>().update(receitaAtualizada);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Receita editada com sucesso!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Erro ao editar receita")));
+    }
+
+    GoRouter.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
     final receita = widget.receita;
@@ -110,20 +136,7 @@ class _ReceitaEditarState extends State<ReceitaEditar> {
               return Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    if (!_formKey.currentState!.validate()) return;
-
-                    final receitaAtualizada = Receita(
-                      id: receita.id,
-                      nome: nomeController.text,
-                      materiaPrima: receita.consumoPorUnidade,
-                      produto: receita.produto,
-                      qtdMercadoriaGerada: 1, // valor já usado no construtor
-                    );
-
-                    receitaController.update(receitaAtualizada);
-
-                    FocusScope.of(context).unfocus();
-                    GoRouter.of(context).pop();
+                    _submit();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: UserColor.primary,

@@ -73,7 +73,7 @@ class _ReceitasState extends State<Receitas> {
                           (receita) => ListTile(
                             title: Text(receita.nome),
                             subtitle: Text(
-                              'Custo: R\$ ${receita.custoUnitario.toStringAsFixed(2).replaceAll('.', ',')}',
+                              'Custo: R\$ ${receita.custoUnitario.toStringAsFixed(2).replaceAll('.', ',')} por ${receita.produto.medida.sigla}',
                             ),
                             contentPadding: const EdgeInsets.only(
                               left: 16,
