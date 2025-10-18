@@ -63,6 +63,7 @@ class DeleteReceitaButton extends StatelessWidget {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Image.asset(Img.remove),

@@ -23,6 +23,7 @@ class _MercadoriaCriarState extends State<MercadoriaCriar> {
   final TextEditingController quantidadeController = TextEditingController();
   Medida selectedMedida = Medida.kg;
 
+  @override
   void dispose() {
     nomeController.dispose();
     vendaController.dispose();

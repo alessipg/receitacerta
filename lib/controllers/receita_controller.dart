@@ -20,6 +20,11 @@ class ReceitaController extends ChangeNotifier {
     this.insumoController,
     this.mercadoriaController,
   ) {
+    _initializeController();
+  }
+
+  _initializeController() async {
+    await repository.waitForInitialization();
     // 🔹 Garante que todas as receitas já existentes tenham ID
     for (final receita in repository.receitas) {
       if (receita.id == null) {
@@ -29,17 +34,18 @@ class ReceitaController extends ChangeNotifier {
         _idCounter = receita.id! + 1;
       }
     }
+    notifyListeners();
   }
 
   UnmodifiableListView<Receita> get receitas =>
       UnmodifiableListView(repository.receitas);
 
-  void criar(
+  Future<void> criar(
     String nome,
     Map<Insumo, double> materiaPrima,
     Mercadoria mercadoria,
     int qtdMercadoria,
-  ) {
+  ) async {
     final novaReceita = Receita(
       id: _idCounter++, // 🔹 ID só vem do controller
       nome: nome,
@@ -48,7 +54,7 @@ class ReceitaController extends ChangeNotifier {
       materiaPrima: materiaPrima,
     );
 
-    mercadoriaController.update(
+    await mercadoriaController.update(
       Mercadoria(
         id: mercadoria.id,
         nome: mercadoria.nome,
@@ -60,22 +66,19 @@ class ReceitaController extends ChangeNotifier {
       ),
     );
 
-    repository.receitas.add(novaReceita);
-    notifyListeners();
+    await repository.addReceita(novaReceita);
   }
 
-  void update(Receita receita) {
+  Future<void> update(Receita receita) async {
     final index = repository.receitas.indexWhere((r) => r.id == receita.id);
     if (index == -1) {
       throw Exception('Receita com id ${receita.id} não encontrada.');
     }
-    repository.receitas[index] = receita;
-    notifyListeners();
+    await repository.updateReceita(receita);
   }
 
-  void delete(int id) {
-    repository.receitas.removeWhere((receita) => receita.id == id);
-    notifyListeners();
+  Future<void> delete(int id) async {
+    await repository.deleteReceita(id);
   }
 
   Receita getById(int id) {

@@ -9,19 +9,32 @@ import 'config/routes.dart';
 import 'controllers/mercadoria_controller.dart';
 import 'repositories/mercadoria_repository.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize repositories and wait for database loading
+  final insumoRepository = InsumoRepository();
+  final mercadoriaRepository = MercadoriaRepository();
+  final receitaRepository = ReceitaRepository();
+
+  await Future.wait([
+    insumoRepository.waitForInitialization(),
+    mercadoriaRepository.waitForInitialization(),
+    receitaRepository.waitForInitialization(),
+  ]);
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => InsumoController(InsumoRepository()),
+          create: (context) => InsumoController(insumoRepository),
         ),
         ChangeNotifierProvider(
-          create: (context) => MercadoriaController(MercadoriaRepository()),
+          create: (context) => MercadoriaController(mercadoriaRepository),
         ),
         ChangeNotifierProvider(
           create: (context) => ReceitaController(
-            ReceitaRepository(),
+            receitaRepository,
             context.read<InsumoController>(),
             context.read<MercadoriaController>(),
           ),

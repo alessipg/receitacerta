@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 class CustomScaffold extends StatelessWidget {
   final Widget child;
 
-  const CustomScaffold({Key? key, required this.child}) : super(key: key);
+  const CustomScaffold({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

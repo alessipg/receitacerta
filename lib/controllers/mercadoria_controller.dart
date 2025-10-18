@@ -12,6 +12,11 @@ class MercadoriaController extends ChangeNotifier {
   int _idCounter = 0;
 
   MercadoriaController(this.repository) {
+    _initializeController();
+  }
+
+  _initializeController() async {
+    await repository.waitForInitialization();
     // 🔹 Garante IDs únicos para mercadorias já existentes
     for (final mercadoria in repository.mercadorias) {
       if (mercadoria.id == null) {
@@ -20,6 +25,7 @@ class MercadoriaController extends ChangeNotifier {
         _idCounter = mercadoria.id! + 1;
       }
     }
+    notifyListeners();
   }
 
   UnmodifiableListView<Mercadoria> get mercadorias =>
@@ -47,18 +53,18 @@ class MercadoriaController extends ChangeNotifier {
     return menor;
   }
 
-  void criar(
+  Future<void> criar(
     String nome,
     double venda,
     double quantidade,
     Medida medida,
     ReceitaController receitaController,
-  ) {
+  ) async {
     if (repository.mercadorias.any(
       (element) =>
           element.nome.trim().toLowerCase() == nome.trim().toLowerCase(),
     )) {
-      throw Exception('Mercadoria com nome ${nome} já existe.');
+      throw Exception('Mercadoria com nome $nome já existe.');
     }
     final menor = menorCusto(nome, receitaController);
 
@@ -74,8 +80,7 @@ class MercadoriaController extends ChangeNotifier {
 
     mercadoria.id = _idCounter++;
     // 🔹 ID vem só do controller
-    repository.mercadorias.add(mercadoria);
-    notifyListeners();
+    await repository.addMercadoria(mercadoria);
   }
 
   List<Mercadoria> getAll() => List.unmodifiable(repository.mercadorias);
@@ -86,20 +91,18 @@ class MercadoriaController extends ChangeNotifier {
     );
   }
 
-  void update(Mercadoria mercadoria) {
+  Future<void> update(Mercadoria mercadoria) async {
     final index = repository.mercadorias.indexWhere(
       (i) => i.id == mercadoria.id,
     );
     if (index == -1) {
       throw Exception('Mercadoria com id ${mercadoria.id} não encontrado.');
     }
-    repository.mercadorias[index] = mercadoria;
-    notifyListeners();
+    await repository.updateMercadoria(mercadoria);
   }
 
-  void delete(int id) {
-    repository.mercadorias.removeWhere((mercadoria) => mercadoria.id == id);
-    notifyListeners();
+  Future<void> delete(int id) async {
+    await repository.deleteMercadoria(id);
   }
 
   List<Mercadoria> filtrarPorNome(String termo) {
