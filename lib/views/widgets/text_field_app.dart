@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
+import 'package:receitacerta/config/constants.dart';
 
 class TextFieldApp extends StatelessWidget {
   const TextFieldApp({

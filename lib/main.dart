@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
-import 'package:gestor_empreendimento/controllers/insumo_controller.dart';
-import 'package:gestor_empreendimento/repositories/insumo_repository.dart';
-import 'package:gestor_empreendimento/controllers/receita_controller.dart';
-import 'package:gestor_empreendimento/repositories/receita_repository.dart';
+import 'package:receitacerta/config/constants.dart';
+import 'package:receitacerta/controllers/insumo_controller.dart';
+import 'package:receitacerta/repositories/insumo_repository.dart';
+import 'package:receitacerta/controllers/receita_controller.dart';
+import 'package:receitacerta/repositories/receita_repository.dart';
 import 'package:provider/provider.dart';
 import 'config/routes.dart';
 import 'controllers/mercadoria_controller.dart';

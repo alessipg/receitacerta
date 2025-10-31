@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
+import 'package:receitacerta/config/constants.dart';
 
 class ListApp extends StatelessWidget {
   const ListApp({super.key, required this.children});

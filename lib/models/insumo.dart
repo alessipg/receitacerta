@@ -1,5 +1,5 @@
-import 'package:gestor_empreendimento/models/produto.dart';
-import 'package:gestor_empreendimento/config/medida.dart';
+import 'package:receitacerta/models/produto.dart';
+import 'package:receitacerta/config/medida.dart';
 
 class Insumo extends Produto {
   Insumo({

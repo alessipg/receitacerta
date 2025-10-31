@@ -1,8 +1,8 @@
-import 'package:gestor_empreendimento/database/db.dart';
-import 'package:gestor_empreendimento/models/receita.dart';
-import 'package:gestor_empreendimento/models/insumo.dart';
-import 'package:gestor_empreendimento/models/mercadoria.dart';
-import 'package:gestor_empreendimento/config/medida.dart';
+import 'package:receitacerta/database/db.dart';
+import 'package:receitacerta/models/receita.dart';
+import 'package:receitacerta/models/insumo.dart';
+import 'package:receitacerta/models/mercadoria.dart';
+import 'package:receitacerta/config/medida.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -16,6 +16,7 @@ class ReceitaRepository extends ChangeNotifier {
     _initRepository();
   }
 
+  
   _initRepository() async {
     db = await DB.instance.database;
     await _loadReceitas();

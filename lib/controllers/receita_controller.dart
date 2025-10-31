@@ -1,11 +1,11 @@
 import 'dart:collection';
 import 'package:flutter/foundation.dart';
-import 'package:gestor_empreendimento/controllers/mercadoria_controller.dart';
-import 'package:gestor_empreendimento/models/mercadoria.dart';
-import 'package:gestor_empreendimento/models/insumo.dart';
-import 'package:gestor_empreendimento/repositories/receita_repository.dart';
-import 'package:gestor_empreendimento/models/receita.dart';
-import 'package:gestor_empreendimento/controllers/insumo_controller.dart';
+import 'package:receitacerta/controllers/mercadoria_controller.dart';
+import 'package:receitacerta/models/mercadoria.dart';
+import 'package:receitacerta/models/insumo.dart';
+import 'package:receitacerta/repositories/receita_repository.dart';
+import 'package:receitacerta/models/receita.dart';
+import 'package:receitacerta/controllers/insumo_controller.dart';
 import 'package:diacritic/diacritic.dart';
 
 class ReceitaController extends ChangeNotifier {
@@ -50,7 +50,7 @@ class ReceitaController extends ChangeNotifier {
       id: _idCounter++, // 🔹 ID só vem do controller
       nome: nome,
       produto: mercadoria,
-      qtdMercadoriaGerada: qtdMercadoria,
+      qtdMercadoriaGerada: qtdMercadoria.toDouble(),
       materiaPrima: materiaPrima,
     );
 

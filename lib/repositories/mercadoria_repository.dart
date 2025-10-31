@@ -1,5 +1,5 @@
-import 'package:gestor_empreendimento/database/db.dart';
-import 'package:gestor_empreendimento/models/mercadoria.dart';
+import 'package:receitacerta/database/db.dart';
+import 'package:receitacerta/models/mercadoria.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
