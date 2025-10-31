@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
+import 'package:receitacerta/config/constants.dart';
 
 class AppBarUser extends StatelessWidget implements PreferredSizeWidget {
   const AppBarUser({super.key});

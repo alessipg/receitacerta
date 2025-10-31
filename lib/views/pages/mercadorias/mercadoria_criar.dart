@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
-import 'package:gestor_empreendimento/config/medida.dart';
-import 'package:gestor_empreendimento/controllers/mercadoria_controller.dart';
-import 'package:gestor_empreendimento/controllers/receita_controller.dart';
-import 'package:gestor_empreendimento/utils/currency_input_formatter.dart';
-import 'package:gestor_empreendimento/utils/quantity_input_formatter.dart';
+import 'package:receitacerta/config/constants.dart';
+import 'package:receitacerta/config/medida.dart';
+import 'package:receitacerta/controllers/mercadoria_controller.dart';
+import 'package:receitacerta/controllers/receita_controller.dart';
+import 'package:receitacerta/utils/currency_input_formatter.dart';
+import 'package:receitacerta/utils/quantity_input_formatter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +23,7 @@ class _MercadoriaCriarState extends State<MercadoriaCriar> {
   final TextEditingController quantidadeController = TextEditingController();
   Medida selectedMedida = Medida.kg;
 
+  @override
   void dispose() {
     nomeController.dispose();
     vendaController.dispose();

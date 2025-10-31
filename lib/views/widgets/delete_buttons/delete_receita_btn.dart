@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
-import 'package:gestor_empreendimento/controllers/receita_controller.dart';
+import 'package:receitacerta/config/constants.dart';
+import 'package:receitacerta/controllers/receita_controller.dart';
 import 'package:provider/provider.dart';
 
 class DeleteReceitaButton extends StatelessWidget {
@@ -63,6 +63,7 @@ class DeleteReceitaButton extends StatelessWidget {
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Image.asset(Img.remove),
