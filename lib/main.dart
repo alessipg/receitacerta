@@ -8,9 +8,18 @@ import 'package:provider/provider.dart';
 import 'config/routes.dart';
 import 'controllers/mercadoria_controller.dart';
 import 'repositories/mercadoria_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:receitacerta/security/GoogleSignInService.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+  );
+  await GoogleSignInService.initSignIn();
 
   // Initialize repositories and wait for database loading
   final insumoRepository = InsumoRepository();
