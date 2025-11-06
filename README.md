@@ -181,10 +181,8 @@ dart analyze
 ```
 ### Funcionalidades a acrescentar
 >Com exceção das obrigatórias, as demais dependerão do tempo disponível dos colaboradores.
-- [ ] Persistência (ex.: Hive/Sqflite)
 - [ ] Estoque: entrada/saída integrada às receitas
 - [ ] Relatórios de custo/margem
-- [ ] Autenticação com Google
 - [ ] PDV com QRCode
 
 
