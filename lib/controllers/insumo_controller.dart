@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/models/insumo.dart';
-import 'package:gestor_empreendimento/repositories/insumo_repository.dart';
+import 'package:receitacerta/models/insumo.dart';
+import 'package:receitacerta/repositories/insumo_repository.dart';
 import 'package:diacritic/diacritic.dart';
 
 class InsumoController extends ChangeNotifier {
@@ -34,6 +34,7 @@ class InsumoController extends ChangeNotifier {
     }
     insumo.id = _idCounter++; // 🔹 id atribuído aqui
     await repository.addInsumo(insumo);
+    notifyListeners();
   }
 
   Future<void> inserirEstoque(int id, double quantidade, double valor) async {
@@ -45,6 +46,7 @@ class InsumoController extends ChangeNotifier {
     insumo.quantidade += quantidade;
 
     await repository.updateInsumo(insumo);
+    notifyListeners();
   }
 
   Future<void> extrairEstoque(int id, double quantidade) async {
@@ -55,6 +57,7 @@ class InsumoController extends ChangeNotifier {
     insumo.quantidade -= quantidade;
 
     await repository.updateInsumo(insumo);
+    notifyListeners();
   }
 
   Future<void> update(Insumo insumo) async {
@@ -63,6 +66,7 @@ class InsumoController extends ChangeNotifier {
       throw Exception('Insumo com id ${insumo.id} não encontrado.');
     }
     await repository.updateInsumo(insumo);
+    notifyListeners();
   }
 
   List<Insumo> getAll() => List.unmodifiable(repository.insumos);
@@ -78,6 +82,7 @@ class InsumoController extends ChangeNotifier {
 
   Future<void> delete(int id) async {
     await repository.deleteInsumo(id);
+    notifyListeners();
   }
 
   List<Insumo> filtrarPorNome(String termo) {

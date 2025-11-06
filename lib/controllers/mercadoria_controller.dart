@@ -1,9 +1,9 @@
 import 'package:diacritic/diacritic.dart';
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/config/medida.dart';
-import 'package:gestor_empreendimento/controllers/receita_controller.dart';
-import 'package:gestor_empreendimento/models/mercadoria.dart';
-import 'package:gestor_empreendimento/repositories/mercadoria_repository.dart';
+import 'package:receitacerta/config/medida.dart';
+import 'package:receitacerta/controllers/receita_controller.dart';
+import 'package:receitacerta/models/mercadoria.dart';
+import 'package:receitacerta/repositories/mercadoria_repository.dart';
 import 'dart:collection';
 
 class MercadoriaController extends ChangeNotifier {
@@ -103,6 +103,7 @@ class MercadoriaController extends ChangeNotifier {
 
   Future<void> delete(int id) async {
     await repository.deleteMercadoria(id);
+    notifyListeners();
   }
 
   List<Mercadoria> filtrarPorNome(String termo) {

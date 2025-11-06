@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
+import 'package:receitacerta/config/constants.dart';
 import 'package:go_router/go_router.dart';
 
 class Menu extends StatelessWidget {

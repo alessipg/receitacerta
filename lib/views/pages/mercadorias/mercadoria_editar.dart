@@ -1,9 +1,9 @@
-import 'package:gestor_empreendimento/config/constants.dart';
-import 'package:gestor_empreendimento/models/mercadoria.dart';
+import 'package:receitacerta/config/constants.dart';
+import 'package:receitacerta/models/mercadoria.dart';
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/controllers/mercadoria_controller.dart';
-import 'package:gestor_empreendimento/utils/currency_input_formatter.dart';
-import 'package:gestor_empreendimento/utils/quantity_input_formatter.dart';
+import 'package:receitacerta/controllers/mercadoria_controller.dart';
+import 'package:receitacerta/utils/currency_input_formatter.dart';
+import 'package:receitacerta/utils/quantity_input_formatter.dart';
 import 'package:provider/provider.dart';
 
 class MercadoriaEditar extends StatefulWidget {

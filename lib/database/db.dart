@@ -1,5 +1,3 @@
-// ignore_for_file: strict_top_level_inference
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 

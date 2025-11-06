@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/views/widgets/delete_buttons/delete_receita_btn.dart';
-import 'package:gestor_empreendimento/views/widgets/text_field_app.dart';
+import 'package:receitacerta/views/widgets/delete_buttons/delete_receita_btn.dart';
+import 'package:receitacerta/views/widgets/text_field_app.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:gestor_empreendimento/views/widgets/list_app.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
-import 'package:gestor_empreendimento/controllers/receita_controller.dart';
+import 'package:receitacerta/views/widgets/list_app.dart';
+import 'package:receitacerta/config/constants.dart';
+import 'package:receitacerta/controllers/receita_controller.dart';
 
 class Receitas extends StatefulWidget {
   const Receitas({super.key});

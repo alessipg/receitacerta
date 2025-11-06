@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/controllers/insumo_controller.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
+import 'package:receitacerta/controllers/insumo_controller.dart';
+import 'package:receitacerta/config/constants.dart';
 import 'package:provider/provider.dart';
 
 class DeleteInsumoButton extends StatelessWidget {

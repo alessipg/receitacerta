@@ -1,5 +1,5 @@
-import 'package:gestor_empreendimento/models/insumo.dart';
-import 'package:gestor_empreendimento/models/mercadoria.dart';
+import 'package:receitacerta/models/insumo.dart';
+import 'package:receitacerta/models/mercadoria.dart';
 
 class Receita {
   int? id;
@@ -15,9 +15,8 @@ class Receita {
     required this.nome,
     required materiaPrima,
     required this.produto,
-    required qtdMercadoriaGerada,
+    required this.qtdMercadoriaGerada,
   }) {
-    this.qtdMercadoriaGerada = qtdMercadoriaGerada;
     materiaPrima.forEach((insumo, qtdInsumo) {
       consumoPorUnidade[insumo] = qtdInsumo / qtdMercadoriaGerada;
     });
