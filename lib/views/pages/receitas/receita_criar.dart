@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/controllers/insumo_controller.dart';
-import 'package:gestor_empreendimento/controllers/mercadoria_controller.dart';
-import 'package:gestor_empreendimento/controllers/receita_controller.dart';
-import 'package:gestor_empreendimento/models/insumo.dart';
-import 'package:gestor_empreendimento/models/mercadoria.dart';
-import 'package:gestor_empreendimento/utils/quantity_input_formatter.dart';
+import 'package:receitacerta/controllers/insumo_controller.dart';
+import 'package:receitacerta/controllers/mercadoria_controller.dart';
+import 'package:receitacerta/controllers/receita_controller.dart';
+import 'package:receitacerta/models/insumo.dart';
+import 'package:receitacerta/models/mercadoria.dart';
+import 'package:receitacerta/utils/quantity_input_formatter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
+import 'package:receitacerta/config/constants.dart';
 
 class ReceitaCriar extends StatefulWidget {
   const ReceitaCriar({super.key});

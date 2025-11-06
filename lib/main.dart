@@ -1,27 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
-import 'package:gestor_empreendimento/controllers/insumo_controller.dart';
-import 'package:gestor_empreendimento/repositories/insumo_repository.dart';
-import 'package:gestor_empreendimento/controllers/receita_controller.dart';
-import 'package:gestor_empreendimento/repositories/receita_repository.dart';
+import 'package:receitacerta/config/constants.dart';
+import 'package:receitacerta/controllers/insumo_controller.dart';
+import 'package:receitacerta/repositories/insumo_repository.dart';
+import 'package:receitacerta/controllers/receita_controller.dart';
+import 'package:receitacerta/repositories/receita_repository.dart';
 import 'package:provider/provider.dart';
 import 'config/routes.dart';
 import 'controllers/mercadoria_controller.dart';
 import 'repositories/mercadoria_repository.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:receitacerta/security/GoogleSignInService.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseFirestore.instance.settings = const Settings(
+    persistenceEnabled: true,
+  );
+  await GoogleSignInService.initSignIn();
+
+  // Initialize repositories and wait for database loading
+  final insumoRepository = InsumoRepository();
+  final mercadoriaRepository = MercadoriaRepository();
+  final receitaRepository = ReceitaRepository();
+
+  await Future.wait([
+    insumoRepository.waitForInitialization(),
+    mercadoriaRepository.waitForInitialization(),
+    receitaRepository.waitForInitialization(),
+  ]);
+
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => InsumoController(InsumoRepository()),
+          create: (context) => InsumoController(insumoRepository),
         ),
         ChangeNotifierProvider(
-          create: (context) => MercadoriaController(MercadoriaRepository()),
+          create: (context) => MercadoriaController(mercadoriaRepository),
         ),
         ChangeNotifierProvider(
           create: (context) => ReceitaController(
-            ReceitaRepository(),
+            receitaRepository,
             context.read<InsumoController>(),
             context.read<MercadoriaController>(),
           ),

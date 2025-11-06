@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gestor_empreendimento/controllers/receita_controller.dart';
-import 'package:gestor_empreendimento/models/receita.dart';
+import 'package:receitacerta/controllers/receita_controller.dart';
+import 'package:receitacerta/models/receita.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:gestor_empreendimento/config/constants.dart';
+import 'package:receitacerta/config/constants.dart';
 
 class ReceitaEditar extends StatefulWidget {
   final Receita receita;
