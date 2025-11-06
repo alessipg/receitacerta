@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:receitacerta/models/mercadoria.dart';
 import 'package:receitacerta/models/receita.dart';
 import 'package:receitacerta/views/pages/mercadorias/mercadoria_criar.dart';
@@ -17,6 +18,13 @@ import 'package:receitacerta/views/pages/receitas/receita_criar.dart';
 
 final routes = GoRouter(
   initialLocation: '/',
+  redirect: (context, state) {
+    final user = FirebaseAuth.instance.currentUser;
+    final loggingIn = state.fullPath == '/';
+    if (user == null && !loggingIn) return '/';
+    if (user != null && loggingIn) return '/menu';
+    return null;
+  },
   routes: [
     GoRoute(path: '/', builder: (context, state) => const Home()),
     GoRoute(

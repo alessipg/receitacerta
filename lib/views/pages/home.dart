@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:receitacerta/config/constants.dart';
 import 'package:go_router/go_router.dart';
+import 'package:receitacerta/security/GoogleSignInService.dart';
+import 'package:receitacerta/views/pages/menu.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -27,7 +29,20 @@ class Home extends StatelessWidget {
               const SizedBox(height: 16),
 
               ElevatedButton(
-                onPressed: () => GoRouter.of(context).push('/menu'),
+                onPressed: () async {
+                  try {
+                    final userCredential =
+                        await GoogleSignInService.signInWithGoogle();
+                    if (userCredential != null) {
+                      // Login bem-sucedido
+                      context.push('/menu');
+                    }
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Erro no login: $e')),
+                    );
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: UserColor.primary,
                   padding: const EdgeInsets.symmetric(

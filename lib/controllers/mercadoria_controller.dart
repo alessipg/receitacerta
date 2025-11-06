@@ -103,6 +103,7 @@ class MercadoriaController extends ChangeNotifier {
 
   Future<void> delete(int id) async {
     await repository.deleteMercadoria(id);
+    notifyListeners();
   }
 
   List<Mercadoria> filtrarPorNome(String termo) {
