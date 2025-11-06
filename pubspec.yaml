@@ -44,6 +44,7 @@ dependencies:
   firebase_auth: ^6.1.1
   google_sign_in: ^7.2.0
   cloud_firestore: ^6.0.3
+  flutter_dotenv: ^5.2.1
 
 
 dev_dependencies:
@@ -82,6 +83,15 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  assets:
+    - .env
+    - assets/images/google_logo.png
+    - assets/images/recipe_book.png
+    - assets/images/bread.png
+    - assets/images/wheat.png
+    - assets/images/edit.png
+    - assets/images/remove.png
+
   fonts:
     - family: Annie Use Your Telescope
       fonts:
@@ -89,14 +99,6 @@ flutter:
     - family: Aleo
       fonts:
         - asset: assets/fonts/Aleo-Regular.ttf
-
-  assets:
-    - assets/images/google_logo.png
-    - assets/images/recipe_book.png
-    - assets/images/bread.png
-    - assets/images/wheat.png
-    - assets/images/edit.png
-    - assets/images/remove.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
