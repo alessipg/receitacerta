@@ -36,11 +36,13 @@ O aplicativo foi desenvolvido utilizando o framework Flutter, com uso focado na 
 Os seguintes packages foram utilizados no projeto:
 
 - `go_router`: Organização de rotas do aplicativo.
-- `provider`: injeções de dependência e controle de estado.
-- `diacritic`: Remoção de acentos e caracters especiais para buscas por nome.  
+- `provider`: Injeções de dependência e controle de estado.
+- `diacritic`: Remoção de acentos e caracteres especiais para buscas por nome.  
 - `intl`: Formatação com base na localização.
-- `intl`: Formatação com base na localização.
--  `flutter_launcher_icons`: Manipulação de icons
+- `flutter_launcher_icons`: Manipulação de ícones.
+- `sqflite`: Persistência local (SQLite).
+- `firebase_core` e `firebase_auth`: Autenticação via Google.
+- `google_sign_in`: Integração com login do Google.
   
 #### Arquitetura
 A arquitetura escolhida para a estrutura do projeto foi a MVC.
@@ -81,7 +83,9 @@ flutter test
 - `lib/config`: constantes e enums (ex.: `Medida`)
 - `lib/controllers`: camada de controle (Provider) — `InsumoController`, `ReceitaController`, `MercadoriaController`
 - `lib/models`: entidades de domínio (`Insumo`, `Receita`, `Mercadoria`, `Produto`)
-- `lib/repositories`: repositórios em memória (por enquanto, sem persistência)
+- `lib/repositories`: repositórios com persistência em SQLite
+- `lib/database`: configuração do banco de dados local (SQLite)
+- `lib/security`: serviços de autenticação (Google Sign-In)
 - `lib/views/pages`: telas (insumos, receitas, etc.)
 - `lib/utils`: utilitários (ex.: formatadores de entrada)
 - `assets/`: imagens e fontes
@@ -96,8 +100,8 @@ flutter test
 - Estado/DI: `provider`
 - Internacionalização/Formatação: `intl`
 - Busca sem acentos: `diacritic`
-
-Observação: os repositórios atuais são em memória. Ao reiniciar o app, os dados não são persistidos.
+- Persistência: SQLite via `sqflite`
+- Autenticação: Firebase Auth + Google Sign-In
 
 ---
 ## Aplicação
