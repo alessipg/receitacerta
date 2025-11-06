@@ -79,6 +79,7 @@ class ReceitaController extends ChangeNotifier {
 
   Future<void> delete(int id) async {
     await repository.deleteReceita(id);
+    notifyListeners();
   }
 
   Receita getById(int id) {
