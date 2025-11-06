@@ -67,6 +67,7 @@ class ReceitaController extends ChangeNotifier {
     );
 
     await repository.addReceita(novaReceita);
+
   }
 
   Future<void> update(Receita receita) async {

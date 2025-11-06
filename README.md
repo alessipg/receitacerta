@@ -13,12 +13,55 @@ Requisitos usados no desenvolvimento:
 - `Dart SDK version: 3.9.0`
 - Android Studio/SDK e emulador ou dispositivo físico Android
 - Git
+- Conta Firebase (gratuita)
+
+### Configuração inicial
+
+1. Clone o repositório
+2. Copie o arquivo de exemplo de variáveis de ambiente:
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+3. Configure suas credenciais do Firebase no arquivo `.env` (veja seção [Configuração do Firebase](#configuração-do-firebase))
 
 Instalar dependências e rodar:
 ```powershell
 flutter pub get
 flutter run
 ```
+
+### Configuração do Firebase
+
+Este projeto utiliza Firebase para autenticação. Para configurar:
+
+1. Crie um projeto no [Firebase Console](https://console.firebase.google.com/)
+2. Adicione um app Android e/ou Web ao projeto
+3. Copie as credenciais para o arquivo `.env`:
+
+```env
+# Android
+FIREBASE_API_KEY_ANDROID=sua_chave_android_aqui
+FIREBASE_APP_ID_ANDROID=seu_app_id_android_aqui
+FIREBASE_MESSAGING_SENDER_ID=seu_sender_id_aqui
+FIREBASE_PROJECT_ID=seu_project_id_aqui
+FIREBASE_STORAGE_BUCKET=seu_storage_bucket_aqui
+
+# Web
+FIREBASE_API_KEY_WEB=sua_chave_web_aqui
+FIREBASE_APP_ID_WEB=seu_app_id_web_aqui
+FIREBASE_AUTH_DOMAIN=seu_auth_domain_aqui
+FIREBASE_MEASUREMENT_ID=seu_measurement_id_aqui
+```
+
+4. **IMPORTANTE**: Nunca commite o arquivo `.env` no Git! Ele já está no `.gitignore` por segurança.
+
+5. Para obter as credenciais:
+   - **Android**: Project Settings > Your apps > Android app > Config
+   - **Web**: Project Settings > Your apps > Web app > Config
+
+6. Configure as restrições de segurança no Firebase Console:
+   - **Authentication > Settings**: limitar domínios autorizados
+   - **Google Cloud Console > Credentials**: restringir API Keys por package name (Android) ou referrer (Web)
 
 ## Desenvolvimento
 
